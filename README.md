@@ -1,88 +1,92 @@
 # Assistant Agent
 
+[English](README.md) | [中文](README_zh.md)
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-17%2B-orange.svg)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4-green.svg)](https://spring.io/projects/spring-boot)
 [![Spring AI](https://img.shields.io/badge/Spring%20AI-1.1.0-blueviolet.svg)](https://spring.io/projects/spring-ai)
 [![GraalVM](https://img.shields.io/badge/GraalVM-Polyglot-red.svg)](https://www.graalvm.org/)
 
-## ✨ 技术特性
+## ✨ Technical Features
 
-- 🚀 **代码即行动（Code-as-Action）**：Agent 通过生成并执行代码来完成任务，而非仅仅调用预定义工具，可以在代码中灵活组合多个工具，实现复杂流程
-- 🔒 **安全沙箱**：AI 生成的代码在 GraalVM 多语言沙箱中安全运行，具备资源隔离能力
-- 📊 **多维评估**：通过评估图（Graph）进行多层次意图识别，精准指导 Agent 行为
-- 🔄 **Prompt 动态组装**：根据场景及前置评估结果动态注入上下文（经验、知识等）到 Prompt 中，灵活处理不同任务
-- 🧠 **经验学习**：自动积累成功经验，持续提升后续任务的表现
-- ⚡ **快速响应**：熟悉场景下，跳过 LLM 推理过程，基于经验快速响应
+- 🚀 **Code-as-Action**: Agent generates and executes code to complete tasks, rather than just calling predefined tools
+- 🔒 **Secure Sandbox**: AI-generated code runs safely in GraalVM polyglot sandbox with resource isolation
+- 📊 **Multi-dimensional Evaluation**: Multi-layer intent recognition through Evaluation Graph, precisely guiding Agent behavior
+- 🔄 **Dynamic Prompt Builder**: Dynamically inject context (experiences, knowledge, etc.) into prompts based on scenarios and evaluation results
+- 🧠 **Experience Learning**: Automatically accumulates successful experiences to continuously improve performance on subsequent tasks
+- ⚡ **Fast Response**: For familiar scenarios, skip LLM reasoning process and respond quickly based on experience
 
-## 📖 简介
+## 📖 Introduction
 
-**Assistant Agent** 是一个基于 [Spring AI Alibaba](https://github.com/alibaba/spring-ai-alibaba) 构建的企业级智能助手框架，采用代码即行动（Code-as-Action）范式，通过生成和执行代码来编排工具、完成任务。它是一个**能理解、能行动、能学习**的智能助手解决方案。
+**Assistant Agent** is an enterprise-grade intelligent assistant framework built on [Spring AI Alibaba](https://github.com/alibaba/spring-ai-alibaba), adopting the Code-as-Action paradigm to orchestrate tools and complete tasks by generating and executing code. It's an intelligent assistant solution that **understands, acts, and learns**.
 
-### Assistant Agent 能帮你做什么？
+### What Can Assistant Agent Do?
 
-Assistant Agent 是一个功能完整的智能助手，具备以下核心能力：
+Assistant Agent is a fully-featured intelligent assistant with the following core capabilities:
 
-- 🔍 **智能问答**：支持多数据源统一检索架构（通过 SPI 可扩展知识库、Web 等数据源），提供准确、可溯源的答案
-- 🛠️ **工具调用**：支持 MCP、HTTP API（OpenAPI）等协议，灵活接入海量工具，可组合调用实现复杂业务流程
-- ⏰ **主动服务**：支持定时任务、延迟执行、事件回调，让助手主动为你服务
-- 📬 **多渠道触达**：内置 IDE 回复，通过 SPI 可扩展钉钉、飞书、企微、Webhook 等渠道
+- 🔍 **Intelligent Q&A**: Supports unified retrieval architecture across multiple data sources (extensible via SPI for knowledge base, Web, etc.), providing accurate, traceable answers
+- 🛠️ **Tool Invocation**: Supports MCP, HTTP API (OpenAPI) and other protocols, flexibly access massive tools, combine multiple tools to implement complex business workflows
+- ⏰ **Proactive Service**: Supports scheduled tasks, delayed execution, event callbacks, letting the assistant proactively serve you
+- 📬 **Multi-channel Delivery**: Built-in IDE reply, extensible to DingTalk, Feishu, WeCom, Webhook and other channels via SPI
 
-### 为什么选择 Assistant Agent？
+### Why Choose Assistant Agent?
 
-| 价值 | 说明 |
-|------|------|
-| **降低成本** | 7×24 小时智能客服，大幅减少人工客服成本 |
-| **快速接入** | 业务平台通过简单配置即可接入，无需大量开发投入 |
-| **灵活定制** | 配置知识库、接入企业工具，打造专属业务助手 |
-| **持续优化** | 自动学习积累经验，助手越用越聪明 |
+| Value | Description |
+|-------|-------------|
+| **Cost Reduction** | 24/7 intelligent customer service, significantly reducing manual support costs |
+| **Quick Integration** | Business platforms can integrate with simple configuration, no extensive development required |
+| **Flexible Customization** | Configure knowledge base, integrate enterprise tools, build your exclusive business assistant |
+| **Continuous Optimization** | Automatically learns and accumulates experience, the assistant gets smarter with use |
 
-### 适用场景
+### Use Cases
 
-- **智能客服**：接入企业知识库，智能解答用户咨询
-- **运维助手**：对接监控、工单系统，自动处理告警、查询状态、执行操作
-- **业务助理**：连接 CRM、ERP 等业务系统，辅助员工完成日常工作
+- **Intelligent Customer Service**: Connect to enterprise knowledge base, intelligently answer user inquiries
+- **Operations Assistant**: Connect to monitoring and ticketing systems, automatically handle alerts, query status, execute operations
+- **Business Assistant**: Connect to CRM, ERP and other business systems, assist employees in daily work
 
-> 💡 以上仅为典型场景示例。通过配置知识库和接入工具，Assistant Agent 可适配更多业务场景，欢迎探索。
 
-![QA_comparison.png](images/QA_comparison.png)
-![Tool_comparison.png](images/Tool_comparison.png)
+> 💡 The above are just typical scenario examples. By configuring knowledge base and integrating tools, Assistant Agent can adapt to more business scenarios. Feel free to explore.
 
-### 整体工作原理
+![QA_comparison_en.png](images/QA_comparison_en.png)
+![Tool_comparison_en.png](images/Tool_comparison_en.png)
 
-以下是 Assistant Agent 处理一个完整请求的端到端流程示例：
 
-![workflow.png](images/workflow.png)
+### Overall Working Principle
 
-### 项目结构
+Below is an end-to-end flow example of how Assistant Agent processes a complete request:
+
+![workflow_en.png](images/workflow_en.png)
+
+### Project Structure
 
 ```
 assistant-agent/
-├── assistant-agent-common          # 通用工具、枚举、常量
-├── assistant-agent-core            # 核心引擎：GraalVM 执行器、工具注册表
-├── assistant-agent-extensions      # 扩展模块：
-│   ├── dynamic/               #   - 动态工具（MCP、HTTP API）
-│   ├── experience/            #   - 经验管理与快速意图配置
-│   ├── learning/              #   - 学习提取与存储
-│   ├── search/                #   - 统一搜索能力
-│   ├── reply/                 #   - 多渠道回复
-│   ├── trigger/               #   - 触发器机制
-│   └── evaluation/            #   - 评估集成
-├── assistant-agent-prompt-builder  # Prompt 动态组装
-├── assistant-agent-evaluation      # 评估引擎
-├── assistant-agent-autoconfigure   # Spring Boot 自动配置
-└── assistant-agent-start           # 启动模块
+├── assistant-agent-common          # Common tools, enums, constants
+├── assistant-agent-core            # Core engine: GraalVM executor, tool registry
+├── assistant-agent-extensions      # Extension modules:
+│   ├── dynamic/               #   - Dynamic tools (MCP, HTTP API)
+│   ├── experience/            #   - Experience management and FastIntent configuration
+│   ├── learning/              #   - Learning extraction and storage
+│   ├── search/                #   - Unified search capability
+│   ├── reply/                 #   - Multi-channel reply
+│   ├── trigger/               #   - Trigger mechanism
+│   └── evaluation/            #   - Evaluation integration
+├── assistant-agent-prompt-builder  # Prompt dynamic assembly
+├── assistant-agent-evaluation      # Evaluation engine
+├── assistant-agent-autoconfigure   # Spring Boot auto-configuration
+└── assistant-agent-start           # Startup module
 ```
 
-## 🚀 快速启动
+## 🚀 Quick Start
 
-### 前置要求
+### Prerequisites
 
 - Java 17+
 - Maven 3.8+
 - DashScope API Key
 
-### 1. 克隆并构建
+### 1. Clone and Build
 
 ```bash
 git clone https://github.com/alibaba/assistant-agent.git
@@ -90,15 +94,15 @@ cd assistant-agent
 mvn clean install -DskipTests
 ```
 
-### 2. 配置 API Key
+### 2. Configure API Key
 
 ```bash
 export DASHSCOPE_API_KEY=your-api-key-here
 ```
 
-### 3. 最小配置
+### 3. Minimal Configuration
 
-项目已内置默认配置，只需确保 API Key 正确即可。如需自定义，可编辑 `assistant-agent-start/src/main/resources/application.yml`：
+The project has built-in default configuration, just ensure the API Key is correct. For customization, edit `assistant-agent-start/src/main/resources/application.yml`:
 
 ```yaml
 spring:
@@ -110,22 +114,22 @@ spring:
           model: qwen-max
 ```
 
-### 4. 启动应用
+### 4. Start the Application
 
 ```bash
 cd assistant-agent-start
 mvn spring-boot:run
 ```
 
-所有扩展模块默认开启并采用合理的配置，无需额外配置即可快速启动。
+All extension modules are enabled by default with sensible configurations; no additional configuration is required for a quick start.
 
-### 5. 配置知识库（接入业务知识）
+### 5. Configure Knowledge Base (Connect to Business Knowledge)
 
-> 💡 框架默认提供 Mock 知识库实现用于演示测试。**生产环境需要接入真实知识源**（如向量数据库、Elasticsearch、企业知识库 API 等），以便 Agent 能够检索并回答业务相关问题。
+> 💡 The framework provides a Mock knowledge base implementation by default for demonstration and testing. **Production environments need to connect to real knowledge sources** (such as vector databases, Elasticsearch, enterprise knowledge base APIs, etc.) so that the Agent can retrieve and answer business-related questions.
 
-#### 方式一：快速体验（使用内置 Mock 实现）
+#### Option 1: Quick Experience (Using Built-in Mock Implementation)
 
-默认配置已启用知识库搜索，可直接体验：
+The default configuration has knowledge base search enabled, you can experience it directly:
 
 ```yaml
 spring:
@@ -135,12 +139,12 @@ spring:
         extension:
           search:
             enabled: true
-            knowledge-search-enabled: true  # 默认开启
+            knowledge-search-enabled: true  # Enabled by default
 ```
 
-#### 方式二：接入真实知识库（推荐）
+#### Option 2: Connect to Real Knowledge Base (Recommended)
 
-实现 `SearchProvider` SPI 接口，接入你的业务知识源：
+Implement the `SearchProvider` SPI interface to connect to your business knowledge sources:
 
 ```java
 package com.example.knowledge;
@@ -150,7 +154,7 @@ import com.alibaba.assistant.agent.extension.search.model.*;
 import org.springframework.stereotype.Component;
 import java.util.*;
 
-@Component  // 添加此注解，Provider 会自动注册
+@Component  // Add this annotation, Provider will be auto-registered
 public class MyKnowledgeSearchProvider implements SearchProvider {
 
     @Override
@@ -162,10 +166,10 @@ public class MyKnowledgeSearchProvider implements SearchProvider {
     public List<SearchResultItem> search(SearchRequest request) {
         List<SearchResultItem> results = new ArrayList<>();
         
-        // 1. 从你的知识源查询（向量数据库、ES、API 等）
-        // 示例：List<Doc> docs = vectorStore.similaritySearch(request.getQuery());
+        // 1. Query from your knowledge source (vector database, ES, API, etc.)
+        // Example: List<Doc> docs = vectorStore.similaritySearch(request.getQuery());
         
-        // 2. 转换为 SearchResultItem
+        // 2. Convert to SearchResultItem
         // for (Doc doc : docs) {
         //     SearchResultItem item = new SearchResultItem();
         //     item.setId(doc.getId());
@@ -187,437 +191,449 @@ public class MyKnowledgeSearchProvider implements SearchProvider {
 }
 ```
 
-#### 常见知识源接入示例
+#### Common Knowledge Source Integration Examples
 
-| 知识源类型 | 接入方式 |
-|-----------|---------|
-| **向量数据库**（阿里云 AnalyticDB、Milvus、Pinecone） | 在 `search()` 方法中调用向量相似度检索 API |
-| **Elasticsearch** | 使用 ES 客户端执行全文检索或向量检索 |
-| **企业知识库 API** | 调用内部知识库 REST API |
-| **本地文档** | 读取并索引本地 Markdown/PDF 文件 |
+| Knowledge Source Type | Integration Method |
+|----------------------|-------------------|
+| **Vector Database** (Alibaba Cloud AnalyticDB, Milvus, Pinecone) | Call vector similarity search API in `search()` method |
+| **Elasticsearch** | Use ES client for full-text or vector search |
+| **Enterprise Knowledge Base API** | Call internal knowledge base REST API |
+| **Local Documents** | Read and index local Markdown/PDF files |
 
-> 📖 更多细节请参考：[知识检索模块文档](assistant-agent-extensions/src/main/java/com/alibaba/assistant/agent/extension/search/README.md)
+> 📖 For more details, refer to: [Knowledge Search Module Documentation](assistant-agent-extensions/src/main/java/com/alibaba/assistant/agent/extension/search/README.md)
 
-## 🧩 核心模块介绍
+## 🧩 Core Module Introduction
 
-### 评估模块（Evaluation）
+### Evaluation Module
 
-**作用**：多维度意图识别框架，通过评估图（Graph）对信息进行多层次特质识别。
+**Role**: Multi-dimensional intent recognition framework that performs multi-layer trait recognition through Evaluation Graph.
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
-│                    评估图 (Evaluation Graph) 示例                  │
+│                    Evaluation Graph Example                      │
 ├──────────────────────────────────────────────────────────────────┤
 │                                                                  │
-│  用户输入: "查询今日订单"                                           │
+│  User Input: "Query today's orders"                              │
 │          │                                                       │
 │          ▼                                                       │
 │  ┌─────────────────────────────────────────────────────────┐     │
-│  │ Layer 1 （并行执行）                                      │     │
+│  │ Layer 1 (parallel execution)                            │     │
 │  │   ┌────────────┐         ┌────────────┐                 │     │
-│  │   │ 是否模糊?   │         │ 输入改写     │                 │     │
-│  │   │ 清晰/模糊   │         │（增强）      │                 │     │
+│  │   │ Is Vague?  │         │   Rewrite  │                 │     │
+│  │   │ clear/vague│         │ (enhance)  │                 │     │
 │  │   └─────┬──────┘         └─────┬──────┘                 │     │
 │  └─────────┼──────────────────────┼────────────────────────┘     │
 │            │                      │                              │
 │            └──────────┬───────────┘                              │
 │                       ▼                                          │
 │  ┌─────────────────────────────────────────────────────────┐     │
-│  │ Layer 2 (基于改写内容，并行执行)                            │     │
-│  │   ┌──────────┐   ┌──────────┐   ┌──────────┐            │     │
-│  │   │ 检索经验  │   │ 匹配工具  │   │ 搜索知识  │             │     │
-│  │   │ 有/无    │   │ 有/无     │   │ 有/无    │             │     │
-│  │   └──────────┘   └──────────┘   └──────────┘            │     │
+│  │ Layer 2 (based on rewritten content, parallel)          │     │
+│  │   ┌──────────┐   ┌───────────┐   ┌───────────┐          │     │
+│  │   │Experience│   │ Tool      │   │ Knowledge │          │     │
+│  │   │available │   │ Available │   │ Available │          │     │
+│  │   │ yes/no   │   │  yes/no   │   │  yes/no   │          │     │ 
+│  │   └──────────┘   └───────────┘   └───────────┘          │     │
 │  └─────────────────────────────────────────────────────────┘     │
 │                       │                                          │
 │                       ▼                                          │
 │            ┌────────────────────┐                                │
-│            │ 整合不同维度评估结果  │                                │
-│            │ → 传递给后续模块     │                                │
+│            │ Integrate evaluation│                               │
+│            │ results from        │                               │
+│            │ different dimensions│                               │
+│            │ → Pass to modules   │                               │
 │            └────────────────────┘                                │
 │                                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
-**核心能力**：
-- **双评估引擎**：
-  - **LLM 评估**：通过大模型进行复杂语义判断，用户可完全自定义评估 Prompt（`customPrompt`），也可使用默认 Prompt 组装（支持 `description`、`workingMechanism`、`fewShots` 等配置）
-  - **Rule-based 评估**：通过 Java 函数实现规则逻辑，用户自定义 `Function<CriterionExecutionContext, CriterionResult>` 执行任意规则判断，适合阈值检测、格式校验、精确匹配等场景
-- **依赖关系自定义**：评估项可通过 `dependsOn` 声明前置依赖，系统自动构建评估图按拓扑执行，无依赖项并行、有依赖项顺序执行，后续评估项可访问前置评估项的结果
-- **评估结果**：支持 `BOOLEAN`、`ENUM`、`SCORE`、`JSON`、`TEXT` 等类型，传递给 Prompt Builder 驱动动态组装
+**Core Capabilities**:
+- **Dual Evaluation Engines**:
+  - **LLM Evaluation**: Complex semantic judgment through large models. Users can fully customize evaluation prompts (`customPrompt`), or use default prompt assembly (supports `description`, `workingMechanism`, `fewShots` configurations)
+  - **Rule-based Evaluation**: Implement rule logic through Java functions. Users can customize `Function<CriterionExecutionContext, CriterionResult>` to execute any rule judgment, suitable for threshold detection, format validation, exact matching, etc.
+- **Custom Dependencies**: Evaluation items can declare dependencies via `dependsOn`. The system automatically builds an evaluation graph for topological execution - items without dependencies run in parallel, items with dependencies run sequentially. Subsequent evaluation items can access results from preceding items.
+- **Evaluation Results**: Support `BOOLEAN`, `ENUM`, `SCORE`, `JSON`, `TEXT` and other types, passed to Prompt Builder to drive dynamic assembly
 
 ---
 
-### Prompt Builder 模块
+### Prompt Builder Module
 
-**作用**：根据评估结果和运行时上下文，动态组装发送给模型的 Prompt。示例：
+**Role**: Dynamically assemble prompts sent to the model based on evaluation results and runtime context. Example:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                   Prompt Builder - 条件化动态生成                         │
+│                   Prompt Builder - Conditional Dynamic Generation       │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  评估结果输入:                                                            │
-│  ┌────────────────────────────────────────────────────────┐             │
-│  │ 模糊: 是  │ 经验: 有  │ 工具: 有  │ 知识: 无               │             │
-│  └────────────────────────────────────────────────────────┘             │
+│  Evaluation Results Input:                                              │
+│  ┌──────────────────────────────────────────────────────────┐           │
+│  │ Vague: yes │ Experience: yes │ Tools: yes │ Knowledge: no│           │
+│  └──────────────────────────────────────────────────────────┘           │
 │                    │                                                    │
 │                    ▼                                                    │
-│  ┌────────────────────────────────────────────────────────────────┐     │
-│  │              自定义 PromptBuilder 条件匹配                       │     │
-│  │                                                                │     │
-│  │   模糊=是 ──────▶ 注入 [澄清引导 Prompt]                          │     │
-│  │   模糊=否 ──────▶ 注入 [直接执行 Prompt]                          │     │
-│  │                                                                │     │
-│  │   经验=有 ──────▶ 注入 [历史经验参考]                              │     │
-│  │   工具=有 ──────▶ 注入 [工具使用说明]                              │     │
-│  │   知识=有 ──────▶ 注入 [相关知识片段]                              │     │
-│  │                                                                │     │
-│  │   组合示例1: 模糊+无工具+无知识 ──▶ [追问用户 Prompt]               │     │
-│  │   组合示例2: 清晰+有工具+有经验 ──▶ [快速执行 Prompt]               │     │
-│  └────────────────────────────────────────────────────────────────┘     │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │              Custom PromptBuilder Condition Matching            │    │
+│  │                                                                 │    │
+│  │   vague=yes ────▶ inject [Clarification Prompt]                 │    │
+│  │   vague=no  ────▶ inject [Direct Execution Prompt]              │    │
+│  │                                                                 │    │
+│  │   experience=yes ──▶ inject [Historical Experience Reference]   │    │
+│  │   tools=yes     ──▶ inject [Tool Usage Instructions]            │    │
+│  │   knowledge=yes ──▶ inject [Relevant Knowledge Snippets]        │    │
+│  │                                                                 │    │
+│  │   Combo 1: vague + no tools + no knowledge ──▶ [Ask User Prompt]│    │
+│  │   Combo 2: clear + tools + experience ──▶ [Fast Execute Prompt] │    │
+│  └─────────────────────────────────────────────────────────────────┘    │
 │                    │                                                    │
 │                    ▼                                                    │
-│  ┌────────────────────────────────────────────────────────────────┐     │
-│  │ 最终动态 Prompt:                                                │     │
-│  │ [系统提示] + [澄清引导] + [历史经验] + [工具说明] + [用户问题]        │     │
-│  └────────────────────────────────────────────────────────────────┘     │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │ Final Dynamic Prompt:                                           │    │
+│  │ [System Prompt] + [Clarification Guide] + [Experience] +        │    │
+│  │ [Tool Instructions] + [User Query]                              │    │
+│  └─────────────────────────────────────────────────────────────────┘    │
 │                    │                                                    │
 │                    ▼                                                    │
 │              ┌──────────┐                                               │
-│              │   模型    │                                               │
+│              │  LLM     │                                               │
 │              └──────────┘                                               │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**核心能力**：
-- 多个 PromptBuilder 按优先级顺序执行
-- 每个 Builder 根据评估结果决定是否贡献、贡献什么内容
-- 支持自定义 Builder，根据业务需求定制 Prompt 逻辑
-- 非侵入式，在模型调用层拦截
+**Core Capabilities**:
+- Multiple PromptBuilders execute in priority order
+- Each Builder decides whether to contribute and what content based on evaluation results
+- Support custom Builders for business-specific prompt logic
+- Non-intrusive, intercepts at model invocation level
 
-**对比传统方案**：
+**Comparison with Traditional Approaches**:
 
-| 对比维度 | 传统方案 | 评估 + PromptBuilder                 |
-|---------|---------|------------------------------------|
-| **Prompt 长度** | 需要穷举各种情况的处理指令（"遇到 A 情况应该...，遇到 B 情况应该..."），Prompt 臃肿 | 通过前置评估识别场景，仅注入当前场景所需的上下文，Prompt 更短更精确 |
-| **Agent 行为可控性** | 依赖模型对冗长指令的"理解"，容易误判 | 行为由评估结果驱动，减少模型误判，更可控               |
-| **扩展灵活性** | 新增场景需修改 Prompt，维护困难 | 根据业务需求修改相关评估项与PromptBuilder        |
-| **代码架构** | 评估逻辑与 Prompt 耦合在一起 | 评估逻辑与 Prompt 模板解耦，关注点分离，独立维护和迭代    |
-
----
-
-### 学习模块（Learning）
-
-**作用**：从 Agent 执行历史中自动提取并保存有价值的经验。
-
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         学习模块工作流程                                   │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  ┌────────────────────────────────────────────────────────────────────┐ │
-│  │                        Agent 执行过程                               │ │
-│  │                                                                    │ │
-│  │  输入 ──▶ 推理 ──▶ 代码生成 ──▶ 执行 ──▶ 输出                          │ │
-│  │   │        │          │         │        │                         │ │
-│  │   └────────┴──────────┴─────────┴────────┘                         │ │
-│  │                        │                                           │ │
-│  └────────────────────────┼───────────────────────────────────────────┘ │
-│                           ▼                                             │
-│              ┌────────────────────────┐                                 │
-│              │      学习上下文捕获      │                                 │
-│              │  - 用户输入             │                                 │
-│              │  - 中间推理步骤          │                                │
-│              │  - 生成的代码           │                                 │
-│              │  - 执行结果             │                                │
-│              └───────────┬────────────┘                                │
-│                          │                                             │
-│                          ▼                                             │
-│   ┌──────────────────────────────────────────────────────────────┐     │
-│   │                    学习提取器分析                              │     │
-│   │  ┌────────────┐  ┌────────────┐  ┌────────────┐              │     │
-│   │  │ 经验提取器  │  │ 模式提取器   │  │ 错误提取器   │              │     │
-│   │  │ 成功模式    │  │ 通用模式    │  │ 失败教训     │              │     │
-│   │  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘              │     │
-│   └────────┼───────────────┼───────────────┼─────────────────────┘     │
-│            │               │               │                           │
-│            └───────────────┼───────────────┘                           │
-│                            ▼                                           │
-│                   ┌────────────────┐                                   │
-│                   │   持久化存储    │ ──▶ 供后续任务参考使用                │
-│                   └────────────────┘                                   │
-│                                                                        │
-└────────────────────────────────────────────────────────────────────────┘
-```
-
-**核心能力**：
-- **After-Agent 学习**：每次 Agent 运行完成后提取经验
-- **After-Model 学习**：每次模型调用后提取经验
-- **Tool Interceptor**：从工具调用中提取经验
-- **离线学习**：批量分析历史数据提取模式
-- **学习过程**：捕获执行上下文 → 提取器分析识别 → 生成经验记录 → 持久化存储供后续复用
+| Comparison | Traditional Approach | Evaluation + PromptBuilder |
+|------------|---------------------|---------------------------|
+| **Prompt Length** | Need to enumerate handling instructions for various situations ("when encountering situation A..., when encountering situation B..."), prompts become bloated | Through pre-evaluation to identify scenarios, only inject context needed for current scenario, prompts are shorter and more precise |
+| **Agent Behavior Controllability** | Relies on model's "understanding" of lengthy instructions, prone to misjudgment | Behavior driven by evaluation results, reducing model misjudgment, more controllable |
+| **Extension Flexibility** | Adding new scenarios requires modifying prompts, difficult to maintain | Modify relevant evaluation items and PromptBuilder based on business needs |
+| **Code Architecture** | Evaluation logic coupled with prompts | Evaluation logic decoupled from prompt templates, separation of concerns, independent maintenance and iteration |
 
 ---
 
-### 经验模块（Experience）
+### Learning Module
 
-**作用**：积累和复用历史成功执行经验。
+**Role**: Automatically extract and save valuable experiences from Agent execution history.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                         经验模块工作示意                                   │
+│                         Learning Module Workflow                        │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  【场景1: 经验积累】                                                       │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │                      Agent Execution Process                      │  │
+│  │                                                                   │  │
+│  │  Input ──▶ Reasoning ──▶ Code Gen ──▶ Execute ──▶ Output          │  │
+│  │   │           │            │           │          │               │  │
+│  │   └───────────┴────────────┴───────────┴──────────┘               │  │
+│  │                            │                                      │  │
+│  └────────────────────────────┼──────────────────────────────────────┘  │
+│                               ▼                                         │
+│              ┌──────────────────────────────┐                           │
+│              │   Learning Context Capture   │                           │
+│              │  - User Input                │                           │
+│              │  - Reasoning Steps           │                           │
+│              │  - Generated Code            │                           │
+│              │  - Execution Result          │                           │
+│              └───────────┬──────────────────┘                           │
+│                          │                                              │
+│                          ▼                                              │
+│   ┌──────────────────────────────────────────────────────────────┐      │
+│   │              Learning Extractors Analysis                    │      │
+│   │                                                              │      │
+│   │  ┌────────────┐  ┌────────────┐  ┌────────────┐              │      │
+│   │  │ Experience │  │  Pattern   │  │   Error    │              │      │
+│   │  │ Extractor  │  │ Extractor  │  │ Extractor  │              │      │
+│   │  │Success Mode│  │Common Mode │  │Failure Mode│              │      │
+│   │  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘              │      │
+│   └────────┼───────────────┼───────────────┼─────────────────────┘      │
+│            │               │               │                            │
+│            └───────────────┼───────────────┘                            │
+│                            ▼                                            │
+│                   ┌────────────────┐                                    │
+│                   │   Persist &    │ ──▶ Available for future tasks     │
+│                   │     Store      │                                    │
+│                   └────────────────┘                                    │
 │                                                                         │
-│   用户: "查询订单状态"  ──▶  Agent 成功执行  ──▶     ┌────────────────┐     │
-│                                                  │ 保存经验:       │     │
-│                                                  │ - React决策经验 │     │
-│                                                  │ - Code经验     │     │
-│                                                  │ - 常识经验      │     │
-│                                                  └────────────────┘     │
-│                                                           │             │
-│                                                           ▼             │
-│                                                  ┌────────────────┐     │
-│                                                  │   经验库        │     │
-│                                                  └────────────────┘     │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Core Capabilities**:
+- **After-Agent Learning**: Extract experiences after each Agent execution
+- **After-Model Learning**: Extract experiences after each model call
+- **Tool Interceptor**: Extract experiences from tool invocations
+- **Offline Learning**: Batch analyze historical data to extract patterns
+- **Learning Process**: Capture execution context → Extractor analysis and recognition → Generate experience records → Persist for subsequent reuse
+
+---
+
+### Experience Module
+
+**Role**: Accumulate and reuse historical successful execution experiences.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                       Experience Module Workflow                        │
+├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  【场景2: 经验复用】                                       ｜              │
-│                                                          │              │
-│   用户: "查询我的订单状态"  ◀────  匹配相似经验  ◀────────────┘              │
+│  [Scenario 1: Experience Accumulation]                                  │
+│                                                                         │
+│   User: "Query order status"  ──▶  Agent Success  ──▶  ┌─────────────┐  │
+│                                                        │ Save:       │  │
+│                                                        │ - ReAct Exp │  │
+│                                                        │ - Code Exp  │  │
+│                                                        │ - Common Exp│  │
+│                                                        └─────────────┘  │
+│                                                              │          │
+│                                                              ▼          │
+│                                                     ┌────────────────┐  │
+│                                                     │ Experience DB  │  │
+│                                                     └────────────────┘  │
+│                                                                         │
+│  [Scenario 2: Experience Reuse]                              │          │
+│                                                              │          │
+│   User: "Query my order status" ◀── Match Similar ◀──────────┘          │
 │            │                                                            │
 │            ▼                                                            │
 │   ┌─────────────────────────────────────────────────┐                   │
-│   │ Agent 参考历史经验，更快决策+生成正确代码             │                   │
+│   │ Agent references history, faster decision +     │                   │
+│   │ generates correct code                          │                   │
 │   └─────────────────────────────────────────────────┘                   │
 │                                                                         │
-│  【场景3: 快速意图响应】                                                   │
+│  [Scenario 3: FastIntent Quick Response]                                │
 │                                                                         │
 │   ┌─────────────────────────────────────────────────────────────────┐   │
-│   │ 经验库                                                           │   │
+│   │ Experience DB                                                   │   │
 │   │   ┌─────────────────────┐       ┌────────────────────────────┐  │   │
-│   │   │ 经验A (普通)         │       │ 经验B (✓ 已配置快速意图)      │  │   │
-│   │   │ 无快速意图配置        │       │   条件: 前缀匹配"查看*销量"   │  │   │
-│   │   │ → 注入prompt供llm参考│       │   动作: 调用销量查询API       │  │   │
+│   │   │ Experience A        │       │ Experience B               │  │   │
+│   │   │ (Normal)            │       │ (✓ FastIntent configured)  │  │   │
+│   │   │ No FastIntent config│       │ Condition: prefix "View    │  │   │
+│   │   │ → Inject to prompt  │       │             *sales"        │  │   │
+│   │   │   for LLM reference │       │   Action: Call sales API   │  │   │
 │   │   └─────────────────────┘       └───────────┬────────────────┘  │   │
 │   └─────────────────────────────────────────────┼───────────────────┘   │
-│                                                 │ 条件命中               │
+│                                                 │ Condition matched     │
 │                                                 ▼                       │
-│   用户: "查看今日销量"  ──▶  匹配经验B快速意图  ──▶  跳过LLM，直接执行          │
-│                                                                         │
-│                                                                         │
-└─────────────────────────────────────────────────────────────────────────┘
-```
-
-**核心能力**：
-- **多类型经验**：代码生成经验、ReAct 决策经验、常识经验，为类似任务提供历史参考
-- **灵活复用**：经验可注入 Prompt 或用于快速意图匹配
-- **生命周期管理**：支持经验的创建、更新、删除
-- **快速意图响应**：
-  - 经验需显式配置 `fastIntentConfig` 才能启用
-  - 匹配已配置条件时，跳过 LLM 完整推理，直接执行预记录的工具调用或代码
-  - 支持多条件匹配：消息前缀、正则、元数据、状态等
-
----
-
-### 触发器模块（Trigger）
-
-**作用**：创建和管理定时任务或事件触发的 Agent 执行。
-
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                         触发器模块能力示意                                 │
-├─────────────────────────────────────────────────────────────────────────┤
-│                                                                         │
-│  【定时触发】                                                             │
-│                                                                         │
-│   用户: "每天早上9点给我发送销售日报"                                        │
-│            │                                                            │
-│            ▼                                                            │
-│   ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐   │
-│   │  Agent 创建      │     │   调度器         │     │  自动执行        │   │
-│   │  Cron 触发器     │────▶│  0 9 * * *      │────▶│  生成日报        │   │
-│   │  (自我调度)      │     │                 │     │  发送通知        │    │
-│   └─────────────────┘     └─────────────────┘     └─────────────────┘   │
-│                                                                         │
-│  【延迟触发】                                                             │
-│                                                                         │
-│   用户: "30分钟后提醒我开会"                                               │
-│            │                                                            │
-│            ▼                                                            │
-│   ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐   │
-│   │  Agent 创建      │     │   30分钟后      │     │  发送提醒         │   │
-│   │  一次性触发器     │────▶│   触发          │────▶│  "该开会了"       │   │
-│   └─────────────────┘     └─────────────────┘     └─────────────────┘   │
-│                                                                         │
-│  【回调触发】                                                             │
-│                                                                         │
-│   用户: "满足xx条件时帮我xx"                                               │
-│                                                                         │
-│   外部系统: 发送事件到 Webhook                                             │
-│            │                                                            │
-│            ▼                                                            │
-│   ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐   │
-│   │  接收回调        │     │   触发 Agent     │     │  处理事件        │   │
-│   │  Webhook 事件   │────▶│   执行任务        │────▶│  返回响应        │   │
-│   └─────────────────┘     └─────────────────┘     └─────────────────┘   │
+│   User: "View today's sales" ──▶ Match Exp B ──▶ Skip LLM, execute      │
+│                                   FastIntent     directly               │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**核心能力**：
-- `TIME_CRON`触发器：支持 Cron 表达式定时触发任务
-- `TIME_ONCE`触发器：支持一次性延迟触发
-- `CALLBACK`触发器：支持回调事件触发
-- Agent 可通过工具自主创建触发器，实现"自我调度"
+**Core Capabilities**:
+- **Multiple Experience Types**: Code generation experience, ReAct decision experience, common sense experience, providing historical reference for similar tasks
+- **Flexible Reuse**: Experiences can be injected into prompts or used for FastIntent matching
+- **Lifecycle Management**: Support experience creation, update, and deletion
+- **FastIntent Quick Response**:
+  - Experience must explicitly configure `fastIntentConfig` to enable
+  - When matching configured conditions, skip full LLM reasoning and directly execute pre-recorded tool calls or code
+- Support multi-condition matching: message prefix, regex, metadata, state, etc.
 
 ---
 
-### 回复渠道模块（Reply Channel）
+### Trigger Module
 
-**作用**：提供灵活的消息回复能力，支持多种输出渠道。
+**Role**: Create and manage scheduled tasks or event-triggered Agent executions.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                       回复渠道模块能力示意                                 │
+│                        Trigger Module Capabilities                      │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│   Agent 需要向用户回复消息                                                 │
+│  [Scheduled Trigger]                                                    │
+│                                                                         │
+│   User: "Send me daily sales report at 9am"                             │
+│            │                                                            │
+│            ▼                                                            │
+│   ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐   │
+│   │  Agent creates  │     │   Scheduler     │     │  Auto Execute   │   │
+│   │  Cron trigger   │────▶│  0 9 * * *      │────▶│  Generate report│   │
+│   │  (self-schedule)│     │                 │     │  Send notify    │   │
+│   └─────────────────┘     └─────────────────┘     └─────────────────┘   │
+│                                                                         │
+│  [Delayed Trigge]                                                       │
+│                                                                         │
+│   User: "Remind me about the meeting in 30 minutes"                     │
+│            │                                                            │
+│            ▼                                                            │
+│   ┌──────────────────┐     ┌─────────────────┐     ┌─────────────────┐  │
+│   │  Agent creates   │     │   After 30min   │     │  Send reminder  │  │
+│   │  one-time trigger│────▶│   fire          │────▶│  "Time to meet" │  │
+│   └──────────────────┘     └─────────────────┘     └─────────────────┘  │
+│                                                                         │
+│  [Callback Trigger]                                                     │
+│                                                                         │
+│   User: "Help me with xx when xx condition is met"                      │
+│                                                                         │
+│   External System: Send event to Webhook                                │
+│            │                                                            │
+│            ▼                                                            │
+│   ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐   │
+│   │  Receive        │     │  Trigger Agent  │     │  Process event  │   │
+│   │  Webhook event  │────▶│  execute task   │────▶│  Return response│   │
+│   └─────────────────┘     └─────────────────┘     └─────────────────┘   │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+**Core Capabilities**:
+- `TIME_CRON` Trigger: Support Cron expression for scheduled task triggers
+- `TIME_ONCE` Trigger: Support one-time delayed trigger
+- `CALLBACK` Trigger: Support callback event trigger
+- Agent can autonomously create triggers through tools, achieving "self-scheduling"
+
+---
+
+### Reply Channel Module
+
+**Role**: Provide flexible message reply capability, supporting multiple output channels.
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     Reply Channel Module Capabilities                   │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│   Agent needs to reply to user                                          │
 │            │                                                            │
 │            ▼                                                            │
 │   ┌─────────────────────────────────────────────────────────────────┐   │
-│   │                    回复渠道路由                                   │   │
+│   │                    Channel Router                               │   │
 │   └─────────────────────────────────────────────────────────────────┘   │
 │            │                                                            │
 │            ├──────────────┬──────────────┬──────────────┐               │
 │            ▼              ▼              ▼              ▼               │
-│   ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐        │
-│   │  DEFAULT   │  │  IDE_CARD  │  │ IM_NOTIFY  │  │  WEBHOOK   │        │
-│   │  文本回复   │  │  卡片展示   │   │  消息推送   │  │  JSON推送   │        │
-│   └─────┬──────┘  └─────┬──────┘  └─────┬──────┘  └─────┬──────┘        │
-│         │               │               │               │               │
-│         ▼               ▼               ▼               ▼               │
-│   ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐          │
-│   │ 控制台    │    │   IDE    │    │   IM     │    │ 第三方    │          │
-│   │ 终端回复  │    │ 富文本卡片 │     │ (可扩展) │    │  系统     │          │
-│   └──────────┘    └──────────┘    └──────────┘    └──────────┘          │
+│   ┌────────────┐  ┌─────────────┐  ┌─────────────┐  ┌────────────┐      │
+│   │ DEFAULT    │  │  IDE_CARD   │  │ IM_NOTIFY   │  │  WEBHOOK   │      │
+│   │ Text Reply │  │ Card Display│  │ Push Notify │  │ JSON Push  │      │
+│   └─────┬──────┘  └─────┬───────┘  └─────┬───────┘  └─────┬──────┘      │
+│         │               │                │                │             │
+│         ▼               ▼                ▼                ▼             │
+│   ┌──────────┐    ┌───────────┐    ┌────────────┐    ┌──────────┐       │
+│   │ Console  │    │   IDE     │    │   IM       │    │ External │       │
+│   │ Terminal │    │ Rich Card │    │(Extendable)│    │  System  │       │
+│   └──────────┘    └───────────┘    └────────────┘    └──────────┘       │
 │                                                                         │
-│  【使用示例】                                                             │
+│  [Usage Example]                                                        │
 │                                                                         │
-│   用户: "分析完成后发送结果"                                                │
+│   User: "Send results after analysis"                                   │
 │            │                                                            │
 │            ▼                                                            │
-│   Agent: send_message(text="分析结果...")                                │
+│   Agent: send_message(text="Analysis results...")                       │
 │            │                                                            │
 │            ▼                                                            │
-│   用户收到消息: "📊 分析结果: ..."                                         │
+│   User receives: "📊 Analysis Results: ..."                             │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**核心能力**：
-- **多渠道路由**：Agent 可根据场景选择不同渠道回复
-- **配置驱动**：动态生成回复工具，无需编码
-- **同步异步支持**：支持同步和异步回复模式
-- **统一接口**：屏蔽底层实现差异
-- **内置示例渠道**：`IDE_TEXT`（演示用）
-- **可扩展渠道**（通过实现 `ReplyChannelDefinition` SPI）：如 `IDE_CARD`、`IM_NOTIFICATION`（钉钉/飞书/企微）、`WEBHOOK_JSON` 等，需用户自行实现
+**Core Capabilities**:
+- **Multi-channel Routing**: Agent can choose different channels to reply based on scenario
+- **Configuration-driven**: Dynamically generate reply tools, no coding required
+- **Sync/Async Support**: Support both synchronous and asynchronous reply modes
+- **Unified Interface**: Shield underlying implementation differences
+- **Built-in Demo Channel**: `IDE_TEXT` (for demonstration)
+- **Extendable Channels** (by implementing `ReplyChannelDefinition` SPI): e.g. `IDE_CARD`, `IM_NOTIFICATION` (DingTalk/Feishu/WeCom), `WEBHOOK_JSON`, etc. - requires custom implementation
 
 ---
 
-### 工具扩展模块（Dynamic Tools）
+### Dynamic Tools Module
 
-**作用**：提供高度可扩展的工具体系，让 Agent 能够调用各类外部工具完成任务。
+**Role**: Provide highly extensible tool system, enabling Agent to call various external tools to complete tasks.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                        工具扩展架构                                       │
+│                        Tool Extension Architecture                      │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│   Agent 需要执行操作                                                      │
+│   Agent needs to execute operation                                      │
 │            │                                                            │
 │            ▼                                                            │
 │   ┌──────────────────────────────────────────────────────────────────┐  │
-│   │                   CodeactTool 工具体系                            │  │
-│   └─────────────────────────────────────────────────────────────────┘   │
+│   │                   CodeactTool System                             │  │
+│   └──────────────────────────────────────────────────────────────────┘  │
 │            │                                                            │
 │            ├─────────────┬─────────────┬─────────────┬──────────────┐   │
 │            ▼             ▼             ▼             ▼              ▼   │
-│   ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌───────┐ │
-│   │   MCP      │ │   HTTP     │ │  Search    │ │  Trigger   │ │ 自定义 │ │
-│   │   Tools    │ │   API      │ │  Tools     │ │  Tools     │ │ Tools │ │
-│   │            │ │   Tools    │ │            │ │            │ │       │ │
-│   └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └───┬───┘ │
-│         │              │              │              │            │     │
-│         ▼              ▼              ▼              ▼            ▼     │
-│   ┌──────────┐   ┌──────────┐   ┌──────────┐   ┌──────────┐  ┌──────┐   │
-│   │ 任意 MCP │   │ REST API │   │ 知识检索   │   │ 定时任务  │  │ ...  │   │
-│   │ Server   │   │ OpenAPI  │   │ 项目搜索  │   │ 事件回调  │  │      │    │
-│   └──────────┘   └──────────┘   └──────────┘   └──────────┘  └──────┘   │
+│   ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌──────┐  │
+│   │   MCP      │ │   HTTP     │ │  Search    │ │  Trigger   │ │Custom│  │
+│   │   Tools    │ │   API      │ │  Tools     │ │  Tools     │ │Tools │  │
+│   │            │ │   Tools    │ │            │ │            │ │      │  │
+│   └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └─────┬──────┘ └──┬───┘  │
+│         │              │              │              │           │      │
+│         ▼              ▼              ▼              ▼           ▼      │
+│   ┌──────────┐   ┌──────────┐   ┌───────────┐   ┌──────────┐  ┌─────┐   │
+│   │ Any MCP  │   │ REST API │   │ Knowledge │   │ Scheduled│  │ ... │   │
+│   │ Server   │   │ OpenAPI  │   │ Search    │   │ Tasks    │  │     │   │
+│   └──────────┘   └──────────┘   │ Project   │   │ Callbacks│  └─────┘   │
+│                                 │ Search    │   └──────────┘            │
+│                                 └───────────┘                           │
 │                                                                         │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**核心能力**：
-- **MCP 工具支持**：一键接入任意 MCP Server，复用 MCP 工具生态
-- **HTTP API 支持**：通过 OpenAPI 规范接入 REST API，调用企业现有接口
-- **内置工具类型**：搜索（Search）、回复（Reply）、触发器（Trigger）、学习（Learning）等
-- **自定义工具 SPI**：实现 `CodeactTool` 接口，轻松扩展新工具
+**Core Capabilities**:
+- **MCP Tool Support**: One-click integration with any MCP Server, reuse MCP tool ecosystem
+- **HTTP API Support**: Integrate REST APIs through OpenAPI specification, call existing enterprise interfaces
+- **Built-in Tool Types**: Search, Reply, Trigger, Learning, etc.
+- **Custom Tool SPI**: Implement `CodeactTool` interface to easily extend new tools
 
 ---
 
-### 知识检索模块（Knowledge Search）
+### Knowledge Search Module
 
-**作用**：多数据源统一检索引擎，为 Agent 的问答和决策提供知识支撑。
+**Role**: Multi-source unified search engine, providing knowledge support for Agent Q&A and decision-making.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                       多数据源检索架构                                     │
+│                    Multi-Source Search Architecture                     │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                         │
-│  用户问题: "如何配置数据库连接池？"                                          │
+│  User Question: "How to configure database connection pool?"            │
 │            │                                                            │
 │            ▼                                                            │
 │  ┌─────────────────────────────────────────────────────────────────┐    │
-│  │                      统一检索接口                                 │    │
+│  │                 Unified Search Interface                        │    │
 │  └─────────────────────────────────────────────────────────────────┘    │
 │            │                                                            │
 │            ├────────────────┬────────────────┬────────────────┐         │
 │            ▼                ▼                ▼                ▼         │
-│   ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌─────────┐     │
-│   │    知识库     │  │    项目       │  │     Web      │  │  自定义  │    │
-│   │   Provider   │  │   Provider   │  │   Provider   │  │Provider │    │
-│   │   (主要)      │  │   (可选)     │  │   (可选)      │  │  (SPI)  │    │
-│   └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └───┬─────┘    │
-│          │                 │                 │              │          │
-│          ▼                 ▼                 ▼              ▼          │
 │   ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌────────┐      │
-│   │ FAQ / 文档    │  │ 源代码       │  │ 网络文章       │  │  ...   │      │
-│   │ 历史问答      │  │ 配置文件      │  │ 技术论坛       │  │        │      │
-│   │ 团队笔记      │  │ 日志         │  │               │  │        │      │
-│   └──────────────┘  └─────────────┘  └───────────────┘  └────────┘      │
-│          │                 │                 │              │          │
-│          └─────────────────┴─────────────────┴──────────────┘          │
-│                            │                                           │
-│                            ▼                                           │
-│               ┌────────────────────────┐                               │
-│               │ 聚合排序                │                               │
-│               │ → 注入 Prompt          │                                │
-│               └────────────────────────┘                               │
-│                                                                        │
-└────────────────────────────────────────────────────────────────────────┘
+│   │  Knowledge   │  │   Project    │  │     Web      │  │ Custom │      │
+│   │   Provider   │  │   Provider   │  │   Provider   │  │Provider│      │
+│   │  (Primary)   │  │  (Optional)  │  │  (Optional)  │  │ (SPI)  │      │
+│   └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └───┬────┘      │
+│          │                 │                 │              │           │
+│          ▼                 ▼                 ▼              ▼           │
+│   ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌────────┐      │
+│   │ FAQ / Docs   │  │ Source Code  │  │ Web Articles │  │  ...   │      │
+│   │ Q&A History  │  │ Config Files │  │ Tech Forums  │  │        │      │
+│   │ Team Notes   │  │ Logs         │  │              │  │        │      │
+│   └──────────────┘  └──────────────┘  └──────────────┘  └────────┘      │
+│          │                 │                 │              │           │
+│          └─────────────────┴─────────────────┴──────────────┘           │
+│                            │                                            │
+│                            ▼                                            │
+│               ┌────────────────────────┐                                │
+│               │ Aggregate & Rank       │                                │
+│               │ → Inject into Prompt   │                                │
+│               └────────────────────────┘                                │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
-**核心能力**：
-- **统一检索接口**：`SearchProvider` SPI，支持可插拔数据源
-- **演示 Provider**：内置知识库、项目、Web 的 Mock 实现（仅供演示和测试）
-- **自定义扩展**：通过实现 `SearchProvider` 接口，接入任意数据源（数据库、向量库、API）
-- **结果聚合**：支持可配置的排序策略
-- **业务价值**：接入企业知识库提供准确答案、支持答案溯源、降低人工客服压力
+**Core Capabilities**:
+- **Unified Search Interface**: `SearchProvider` SPI, supports pluggable data sources
+- **Demo Providers**: Built-in Mock implementations for Knowledge, Project, Web (for demonstration and testing only)
+- **Custom Extension**: Implement `SearchProvider` interface to connect any data source (databases, vector stores, APIs)
+- **Result Aggregation**: Support configurable ranking strategies
+- **Business Value**: Connect enterprise knowledge base to provide accurate answers, support answer traceability, reduce manual customer service pressure
 
-**配置示例**：
+**Configuration Example**:
 
 ```yaml
 spring:
@@ -627,31 +643,31 @@ spring:
         extension:
           search:
             enabled: true
-            knowledge-search-enabled: true   # 知识库（默认 Mock 实现）
-            project-search-enabled: false    # 项目代码（默认 Mock 实现）
-            web-search-enabled: false        # Web 搜索（默认 Mock 实现）
+            knowledge-search-enabled: true   # Knowledge base (Mock implementation by default)
+            project-search-enabled: false    # Project code (Mock implementation by default)
+            web-search-enabled: false        # Web search (Mock implementation by default)
             default-top-k: 5
             search-timeout-ms: 5000
 ```
 
-> 💡 以上搜索功能默认提供 Mock 实现供演示测试。生产环境需实现 `SearchProvider` SPI 接入实际数据源。
+> 💡 The above search features provide Mock implementations by default for demonstration and testing. For production use, implement `SearchProvider` SPI to connect actual data sources.
 
 ---
 
-## 📚 参考文档
+## 📚 Reference Documentation
 
-- [完整配置参考](assistant-agent-start/src/main/resources/application-reference.yml)
-- [Spring AI Alibaba 文档](https://github.com/alibaba/spring-ai-alibaba)
+- [Full Configuration Reference](assistant-agent-start/src/main/resources/application-reference.yml)
+- [Spring AI Alibaba Documentation](https://github.com/alibaba/spring-ai-alibaba)
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎贡献！请参阅 [CONTRIBUTING.md](CONTRIBUTING.md) 了解指南。
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## 📄 许可证
+## 📄 License
 
-本项目采用 Apache License 2.0 许可证 - 详见 [LICENSE](LICENSE) 文件。
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 致谢
+## 🙏 Acknowledgments
 
 - [Spring AI](https://github.com/spring-projects/spring-ai)
 - [Spring AI Alibaba](https://github.com/alibaba/spring-ai-alibaba)
