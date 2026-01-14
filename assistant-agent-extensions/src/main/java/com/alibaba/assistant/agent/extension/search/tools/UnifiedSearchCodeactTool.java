@@ -148,19 +148,48 @@ public class UnifiedSearchCodeactTool implements SearchCodeactTool {
 		String query = (String) params.get("query");
 		Integer limit = params.containsKey("limit") ? ((Number) params.get("limit")).intValue() : 10;
 
-		// 解析要搜索的源类型列表
-		List<SearchSourceType> sourceTypes = parseSourceTypes(params);
+		// 解析要搜索的源 keys (可以是类型名，也可以是 provider 名)
+		List<String> sourceKeys = parseSourceKeys(params);
 
-		log.info("UnifiedSearchCodeactTool#executeUnifiedSearch - reason=开始统一搜索, query={}, sourceTypes={}, limit={}",
-				query, sourceTypes, limit);
+		log.info("UnifiedSearchCodeactTool#executeUnifiedSearch - reason=开始统一搜索, query={}, sources={}, limit={}",
+				query, sourceKeys, limit);
 
 		// 并行搜索多个数据源
 		List<SearchResultItem> allItems = new ArrayList<>();
 		int successCount = 0;
 		int failureCount = 0;
 
-		for (SearchSourceType sourceType : sourceTypes) {
+		for (String key : sourceKeys) {
 			try {
+				// 1. 尝试作为 Provider Name 匹配
+				Optional<SearchProvider> namedProvider = searchProviders.stream()
+						.filter(p -> p.getName().equalsIgnoreCase(key))
+						.findFirst();
+
+				if (namedProvider.isPresent()) {
+					// 按指定 Provider 名称搜索
+					SearchProvider provider = namedProvider.get();
+					// 当指定具体 Provider 时，尝试使用 CUSTOM 类型，或者该 Provider 支持的第一个类型
+					// 这里为了简单，我们传递 CUSTOM 类型，如果 Provider 不处理 SourceType 也没关系
+					SearchRequest request = buildSearchRequest(query, SearchSourceType.CUSTOM, limit);
+
+					List<SearchResultItem> items = provider.search(request);
+					allItems.addAll(items);
+					successCount++;
+					log.debug("UnifiedSearchCodeactTool#executeUnifiedSearch - reason=指定Provider搜索成功, provider={}, resultCount={}",
+							provider.getName(), items.size());
+					continue;
+				}
+
+				// 2. 尝试作为 SourceType 匹配
+				SearchSourceType sourceType;
+				try {
+					sourceType = SearchSourceType.valueOf(key.toUpperCase());
+				} catch (IllegalArgumentException e) {
+					log.warn("UnifiedSearchCodeactTool#executeUnifiedSearch - reason=无效的源类型或Provider名称, key={}", key);
+					continue;
+				}
+
 				// 查找支持该源类型的 provider
 				List<SearchProvider> providers = searchProviders.stream()
 						.filter(p -> p.supports(sourceType))
@@ -185,8 +214,8 @@ public class UnifiedSearchCodeactTool implements SearchCodeactTool {
 			}
 			catch (Exception e) {
 				failureCount++;
-				log.error("UnifiedSearchCodeactTool#executeUnifiedSearch - reason=单源搜索失败, sourceType={}, error={}",
-						sourceType, e.getMessage(), e);
+				log.error("UnifiedSearchCodeactTool#executeUnifiedSearch - reason=搜索执行失败, sourceKey={}, error={}",
+						key, e.getMessage(), e);
 			}
 		}
 
@@ -208,10 +237,10 @@ public class UnifiedSearchCodeactTool implements SearchCodeactTool {
 	}
 
 	/**
-	 * 解析要搜索的源类型列表。
+	 * 解析要搜索的源列表（字符串）。
 	 */
-	private List<SearchSourceType> parseSourceTypes(Map<String, Object> params) {
-		List<SearchSourceType> sourceTypes = new ArrayList<>();
+	private List<String> parseSourceKeys(Map<String, Object> params) {
+		List<String> keys = new ArrayList<>();
 
 		// 如果指定了 sources 参数
 		if (params.containsKey("sources")) {
@@ -219,24 +248,38 @@ public class UnifiedSearchCodeactTool implements SearchCodeactTool {
 			if (sourcesObj instanceof List) {
 				List<?> sourcesList = (List<?>) sourcesObj;
 				for (Object source : sourcesList) {
-					try {
-						SearchSourceType type = SearchSourceType.valueOf(source.toString().toUpperCase());
-						sourceTypes.add(type);
-					}
-					catch (Exception e) {
-						log.warn("UnifiedSearchCodeactTool#parseSourceTypes - reason=无效的源类型, source={}", source);
+					if (source != null) {
+						keys.add(source.toString());
 					}
 				}
 			}
 		}
 
-		// 如果没有指定或解析失败，使用默认的源类型
-		if (sourceTypes.isEmpty()) {
-			sourceTypes.add(SearchSourceType.PROJECT);
-			sourceTypes.add(SearchSourceType.KNOWLEDGE);
+		// 如果没有指定，使用默认的源类型
+		if (keys.isEmpty()) {
+			keys.add(SearchSourceType.PROJECT.name());
+			keys.add(SearchSourceType.KNOWLEDGE.name());
 		}
 
-		return sourceTypes;
+		return keys;
+	}
+
+	/**
+	 * 获取所有可用的源名称（包括标准类型和Provider名称）。
+	 */
+	private List<Object> getAvailableSourceNames() {
+		List<Object> names = new ArrayList<>();
+		// 添加标准类型
+		for (SearchSourceType type : SearchSourceType.values()) {
+			names.add(type.name().toLowerCase());
+		}
+		// 添加 Provider 名称
+		if (searchProviders != null) {
+			for (SearchProvider p : searchProviders) {
+				names.add(p.getName());
+			}
+		}
+		return names;
 	}
 
 	/**
@@ -265,9 +308,9 @@ public class UnifiedSearchCodeactTool implements SearchCodeactTool {
 			.addParameter(ParameterNode.builder()
 				.name("sources")
 				.type(ParameterType.ARRAY)
-				.description("要搜索的数据源列表，默认搜索 project 和 knowledge")
+				.description("要搜索的数据源列表，支持标准类型(project, knowledge, web等)或指定Provider名称")
 				.required(false)
-				.enumValues(Arrays.asList("project", "knowledge", "web", "experience"))
+				.enumValues(getAvailableSourceNames())
 				.build())
 			.addParameter(ParameterNode.builder()
 				.name("limit")
@@ -335,9 +378,9 @@ public class UnifiedSearchCodeactTool implements SearchCodeactTool {
 		sourcesProp.put("type", "array");
 		Map<String, Object> itemsProp = new LinkedHashMap<>();
 		itemsProp.put("type", "string");
-		itemsProp.put("enum", Arrays.asList("project", "knowledge", "web", "experience"));
+		itemsProp.put("enum", getAvailableSourceNames());
 		sourcesProp.put("items", itemsProp);
-		sourcesProp.put("description", "要搜索的数据源列表，默认搜索 project 和 knowledge");
+		sourcesProp.put("description", "要搜索的数据源列表，支持标准类型或Provider名称");
 		properties.put("sources", sourcesProp);
 
 		// limit 参数（可选）

@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.alibaba.assistant.agent.autoconfigure;
+package com.alibaba.assistant.agent.start.config;
 
+import com.alibaba.assistant.agent.autoconfigure.CodeactAgent;
 import com.alibaba.assistant.agent.common.tools.CodeactTool;
 import com.alibaba.assistant.agent.common.tools.ReplyCodeactTool;
 import com.alibaba.assistant.agent.common.tools.SearchCodeactTool;
@@ -26,6 +27,7 @@ import com.alibaba.assistant.agent.extension.experience.config.ExperienceExtensi
 import com.alibaba.assistant.agent.extension.experience.fastintent.FastIntentService;
 import com.alibaba.assistant.agent.extension.experience.hook.FastIntentReactHook;
 import com.alibaba.assistant.agent.extension.experience.spi.ExperienceProvider;
+import com.alibaba.assistant.agent.extension.search.tools.SearchCodeactToolFactory;
 import com.alibaba.assistant.agent.extension.search.tools.UnifiedSearchCodeactTool;
 import com.alibaba.assistant.agent.common.enums.Language;
 import com.alibaba.cloud.ai.graph.agent.hook.Hook;
@@ -245,7 +247,7 @@ public class CodeactAgentConfig {
 	 *
 	 * @param chatModel Spring AI的ChatModel
 	 * @param replyCodeactTools Reply模块的工具列表（可选）
-	 * @param searchCodeactTools Search模块的工具列表（可选）
+	 * @param searchCodeactToolFactory Search模块的工具工厂（可选）
 	 * @param triggerCodeactTools Trigger模块的工具列表（可选）
 	 * @param unifiedSearchCodeactTool 统一搜索工具（可选）
 	 * @param mcpToolCallbackProvider MCP工具提供者（由MCP Client Boot Starter自动注入，可选）
@@ -254,7 +256,7 @@ public class CodeactAgentConfig {
 	public CodeactAgent grayscaleCodeactAgent(
 			ChatModel chatModel,
 			@Autowired(required = false) List<ReplyCodeactTool> replyCodeactTools,
-			@Autowired(required = false) List<SearchCodeactTool> searchCodeactTools,
+			@Autowired(required = false) SearchCodeactToolFactory searchCodeactToolFactory,
 			@Autowired(required = false) List<TriggerCodeactTool> triggerCodeactTools,
 			@Autowired(required = false) UnifiedSearchCodeactTool unifiedSearchCodeactTool,
 			@Autowired(required = false) ToolCallbackProvider mcpToolCallbackProvider,
@@ -277,9 +279,12 @@ public class CodeactAgentConfig {
 		}
 
 		// 添加Search工具
-		if (searchCodeactTools != null && !searchCodeactTools.isEmpty()) {
-			allCodeactTools.addAll(searchCodeactTools);
-			logger.info("CodeactAgentConfig#grayscaleCodeactAgent - reason=添加SearchCodeactTools, count={}", searchCodeactTools.size());
+		if (searchCodeactToolFactory != null) {
+			List<SearchCodeactTool> searchTools = searchCodeactToolFactory.createTools();
+			if (!searchTools.isEmpty()) {
+				allCodeactTools.addAll(searchTools);
+				logger.info("CodeactAgentConfig#grayscaleCodeactAgent - reason=添加SearchCodeactTools, count={}", searchTools.size());
+			}
 		}
 
 		// 添加Reply工具
@@ -359,12 +364,12 @@ public class CodeactAgentConfig {
                 .codingChatModel(chatModel)
 				.language(Language.PYTHON)     // CodeactAgentBuilder特有方法
 				// 使用 qwen-coder-plus 模型进行代码生成
-				.codeGenerationModelName("qwen3-coder-plus")
+				.codeGenerationModelName("aliyun-qwen3-coder-plus")
 				.enableInitialCodeGen(true)
 				.allowIO(false)
 				.allowNativeAccess(false)
 				.executionTimeout(30000)
-                .tools(replyCodeactTools.toArray(new ToolCallback[0]))
+                .tools(replyCodeactTools != null ? replyCodeactTools.toArray(new ToolCallback[0]) : new ToolCallback[0])
                 .codeactTools(allCodeactTools)
                 .hooks(reactHooks)
                 .subAgentHooks(codeactHooks)
