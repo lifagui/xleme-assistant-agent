@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * This is an in-memory structure that holds all registered functions and their metadata.
  * It should be restored from Store on session recovery.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class CodeContext {

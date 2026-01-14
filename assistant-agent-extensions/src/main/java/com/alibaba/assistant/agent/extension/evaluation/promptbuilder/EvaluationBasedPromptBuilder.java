@@ -34,7 +34,7 @@ import java.util.Objects;
  *   <li>CODEACT阶段: 当评估结果为"模糊"时，生成使用reply工具反问用户的代码指导</li>
  * </ul>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class EvaluationBasedPromptBuilder implements PromptBuilder {

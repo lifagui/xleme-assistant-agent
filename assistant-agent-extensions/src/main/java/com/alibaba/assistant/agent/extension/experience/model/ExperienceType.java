@@ -3,7 +3,7 @@ package com.alibaba.assistant.agent.extension.experience.model;
 /**
  * 经验类型枚举
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public enum ExperienceType {
 

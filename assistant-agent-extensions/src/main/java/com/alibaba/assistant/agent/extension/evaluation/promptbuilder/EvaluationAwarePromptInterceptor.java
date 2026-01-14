@@ -42,7 +42,7 @@ import java.util.Objects;
  *   <li>将组装后的prompt注入到ModelRequest中</li>
  * </ol>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class EvaluationAwarePromptInterceptor extends ModelInterceptor {

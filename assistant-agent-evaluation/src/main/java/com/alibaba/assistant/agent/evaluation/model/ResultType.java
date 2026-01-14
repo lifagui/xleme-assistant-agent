@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.evaluation.model;
 /**
  * Result type for evaluation criterion output
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public enum ResultType {
 

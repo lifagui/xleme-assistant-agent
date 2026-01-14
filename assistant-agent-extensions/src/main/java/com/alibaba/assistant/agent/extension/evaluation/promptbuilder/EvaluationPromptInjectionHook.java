@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
  * <p>这是 evaluation 和 prompt builder 对接的**机制层**，具体的 prompt 内容由
  * {@link EvaluationPromptGuidanceProvider} 实现类提供。
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @HookPositions(HookPosition.BEFORE_MODEL)

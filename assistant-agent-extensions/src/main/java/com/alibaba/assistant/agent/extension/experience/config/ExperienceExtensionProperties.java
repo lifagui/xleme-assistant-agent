@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * 经验模块配置属性
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @ConfigurationProperties(prefix = "spring.ai.alibaba.codeact.extension.experience")
 public class ExperienceExtensionProperties {

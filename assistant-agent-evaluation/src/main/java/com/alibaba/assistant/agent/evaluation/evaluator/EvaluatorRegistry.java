@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * Registry for managing evaluator instances
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class EvaluatorRegistry {
 

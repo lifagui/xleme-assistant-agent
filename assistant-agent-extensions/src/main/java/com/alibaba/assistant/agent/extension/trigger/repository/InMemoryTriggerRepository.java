@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  * 基于内存的触发器定义存储实现
  * 适用于开发和测试场景
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class InMemoryTriggerRepository implements TriggerRepository {

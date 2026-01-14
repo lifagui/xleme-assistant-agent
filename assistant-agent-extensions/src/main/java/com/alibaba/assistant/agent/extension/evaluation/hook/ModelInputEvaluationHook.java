@@ -37,7 +37,7 @@ import java.util.concurrent.CompletableFuture;
  * 模型输入评估 Hook
  * 统一处理 React 阶段和 CodeAct 阶段的模型输入增强与评估
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @HookPositions(HookPosition.BEFORE_MODEL)
 public class ModelInputEvaluationHook extends ModelHook {

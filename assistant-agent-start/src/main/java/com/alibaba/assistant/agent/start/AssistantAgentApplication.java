@@ -43,7 +43,7 @@ import org.springframework.core.env.Environment;
  * mvn -pl assistant-agent-start spring-boot:run
  * </pre>
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @SpringBootApplication

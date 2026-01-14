@@ -31,7 +31,7 @@ import java.util.UUID;
  * Mock 知识库搜索Provider（基于Store/经验池）
  * 提供简单的模拟实现用于演示和测试
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 @Component
 public class MockKnowledgeStoreSearchProvider implements SearchProvider {

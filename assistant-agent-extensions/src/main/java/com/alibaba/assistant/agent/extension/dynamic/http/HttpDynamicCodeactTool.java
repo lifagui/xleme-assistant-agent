@@ -40,7 +40,7 @@ import java.util.StringJoiner;
  *
  * <p>基于 OpenAPI 操作定义，执行 HTTP 请求。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class HttpDynamicCodeactTool extends AbstractDynamicCodeactTool {

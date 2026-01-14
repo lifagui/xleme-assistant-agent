@@ -6,7 +6,7 @@ import java.util.*;
  * 参数Schema定义
  * 用于描述回复渠道支持的参数结构
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class ParameterSchema {
 

@@ -20,7 +20,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 /**
  * 搜索扩展配置属性
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 @ConfigurationProperties(prefix = "spring.ai.alibaba.codeact.extension.search")
 public class SearchExtensionProperties {

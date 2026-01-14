@@ -25,7 +25,7 @@ import java.util.List;
  * <p>用于从外部来源（MCP、OpenAPI 等）动态产出 CodeactTool 实例。
  * 工厂不直接注册进 Spring；由 dynamic module 或 builder 统一注册到 CodeactToolRegistry。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface DynamicCodeactToolFactory {

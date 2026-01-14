@@ -21,7 +21,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * Codeact Evaluation 配置属性
  * 控制各评估点的启用开关与 Suite ID
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @ConfigurationProperties(prefix = "spring.ai.alibaba.codeact.extension.evaluation")
 public class CodeactEvaluationProperties {

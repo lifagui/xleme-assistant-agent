@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p>管理所有动态工具工厂，并在构建时统一触发工具创建和注册。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DynamicCodeactToolFactoryRegistry {

@@ -46,7 +46,7 @@ import java.util.Set;
  *
  * <p>提供 required 参数校验、JSON 解析等通用能力。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public abstract class AbstractDynamicCodeactTool implements CodeactTool {

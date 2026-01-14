@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  * Python runtime environment manager.
  * Handles Python-specific code wrapping, imports, and environment setup.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class PythonEnvironmentManager implements RuntimeEnvironmentManager {

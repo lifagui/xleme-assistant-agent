@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Configuration;
  * Codeact Evaluation 自动配置类
  * 负责创建 EvaluationService、ContextFactory、ResultAttacher 以及各个 Hook
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @Configuration
 @EnableConfigurationProperties(CodeactEvaluationProperties.class)

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * 学习模块配置属性
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @ConfigurationProperties(prefix = "spring.ai.alibaba.codeact.extension.learning")

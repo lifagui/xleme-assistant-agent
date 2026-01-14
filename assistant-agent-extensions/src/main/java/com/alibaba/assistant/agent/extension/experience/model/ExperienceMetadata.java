@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 经验附加元信息
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public class ExperienceMetadata {
 

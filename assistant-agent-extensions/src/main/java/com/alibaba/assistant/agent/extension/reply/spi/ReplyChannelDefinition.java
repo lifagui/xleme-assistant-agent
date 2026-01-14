@@ -10,7 +10,7 @@ import java.util.Map;
  * 回复渠道定义接口
  * 定义了回复渠道的"模板"，Extension层实现此接口提供渠道能力
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public interface ReplyChannelDefinition {
 

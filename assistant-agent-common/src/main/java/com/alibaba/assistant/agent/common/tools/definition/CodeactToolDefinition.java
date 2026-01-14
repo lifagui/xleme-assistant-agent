@@ -27,7 +27,7 @@ import org.springframework.ai.tool.definition.ToolDefinition;
  * <li>返回值描述</li>
  * </ul>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface CodeactToolDefinition extends ToolDefinition {

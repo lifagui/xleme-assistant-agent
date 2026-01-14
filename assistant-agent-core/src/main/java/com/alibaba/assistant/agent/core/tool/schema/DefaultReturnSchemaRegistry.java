@@ -34,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 默认的返回值 schema 注册表实现（进程内）。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DefaultReturnSchemaRegistry implements ReturnSchemaRegistry {

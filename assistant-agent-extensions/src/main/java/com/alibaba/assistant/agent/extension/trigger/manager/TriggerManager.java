@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 触发器管理器
  * 提供触发器的创建、管理和查询能力
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class TriggerManager {

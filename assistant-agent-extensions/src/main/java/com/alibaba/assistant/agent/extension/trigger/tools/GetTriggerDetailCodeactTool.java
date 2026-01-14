@@ -40,7 +40,7 @@ import java.util.Optional;
 /**
  * 获取触发器详情 CodeactTool 实现 - 获取指定触发器的详细信息。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class GetTriggerDetailCodeactTool implements TriggerCodeactTool {

@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.common.enums;
 /**
  * Supported programming languages for code generation and execution.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public enum Language {

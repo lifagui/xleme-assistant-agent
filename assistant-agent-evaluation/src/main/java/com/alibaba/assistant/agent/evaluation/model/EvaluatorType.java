@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.evaluation.model;
  * This enum provides type-safe references to built-in evaluators that are actually implemented.
  * Custom evaluators can still be registered using arbitrary String IDs via evaluatorRef field.
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public enum EvaluatorType {
 

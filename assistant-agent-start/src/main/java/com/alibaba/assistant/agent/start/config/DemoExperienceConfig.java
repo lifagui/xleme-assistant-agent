@@ -32,7 +32,7 @@ import java.util.UUID;
  * <li>CODE 经验：小明系数就是乘方，内部以乘方方式实现</li>
  * </ol>
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Component

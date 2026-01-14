@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.common.tools.definition;
 /**
  * 原始类型枚举 - 用于 PrimitiveShapeNode。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public enum PrimitiveType {

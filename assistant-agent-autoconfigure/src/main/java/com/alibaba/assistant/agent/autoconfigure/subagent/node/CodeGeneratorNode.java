@@ -52,7 +52,7 @@ import java.util.Map;
  * <p>参考AgentLlmNode的设计，但专注于代码生成场景
  * <p>从CodeactTool的元数据构建系统提示，通过拦截器链调用模型
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class CodeGeneratorNode implements NodeActionWithConfig {

@@ -23,7 +23,7 @@ import java.util.Map;
  *
  * <p>包含 OpenAPI 3.1 文档内容及相关配置。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class OpenApiSpec {

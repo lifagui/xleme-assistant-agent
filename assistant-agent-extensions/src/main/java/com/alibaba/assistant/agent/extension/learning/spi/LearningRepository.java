@@ -25,7 +25,7 @@ import java.util.List;
  * 负责学习记录的持久化存储和检索
  *
  * @param <T> 学习记录类型
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface LearningRepository<T> {

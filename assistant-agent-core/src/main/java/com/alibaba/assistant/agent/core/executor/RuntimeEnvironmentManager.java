@@ -24,7 +24,7 @@ import java.util.Map;
  * Manages the runtime environment for code execution.
  * Handles imports, environment setup, and code wrapping for different languages.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface RuntimeEnvironmentManager {

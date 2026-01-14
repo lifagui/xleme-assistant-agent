@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Shape 提取器 - 从 JSON 字符串提取 ShapeNode。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ShapeExtractor {

@@ -18,7 +18,7 @@ import java.util.Set;
  * 经验模块示例数据初始化器
  * 用于演示和测试，在实际生产环境中应该禁用
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @Component
 @ConditionalOnProperty(prefix = "spring.ai.alibaba.codeact.extension.experience.demo",

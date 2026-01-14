@@ -21,7 +21,7 @@ package com.alibaba.assistant.agent.extension.dynamic.mcp;
  * <p>用于提供 MCP Server 的命名与描述信息，仅用于 CodeAct metadata 的生成，
  * 不用于建立连接（连接由 MCP Client Boot Starter 管理）。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class McpServerSpec {

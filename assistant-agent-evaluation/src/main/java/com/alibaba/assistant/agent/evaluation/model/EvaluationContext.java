@@ -29,7 +29,7 @@ import java.util.Map;
  * - Thread-safe by design as it's immutable
  * - Execution state and result propagation is handled by SuiteExecutionContext and CriterionExecutionContext
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class EvaluationContext {
 

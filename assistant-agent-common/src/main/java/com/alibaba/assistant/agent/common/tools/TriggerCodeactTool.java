@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.common.tools;
  *
  * <p>用于定义触发器相关的工具，支持订阅、取消、查询和手动触发等功能。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface TriggerCodeactTool extends CodeactTool {

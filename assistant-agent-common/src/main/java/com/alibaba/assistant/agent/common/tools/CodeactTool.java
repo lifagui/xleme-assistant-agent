@@ -36,7 +36,7 @@ import org.springframework.ai.tool.ToolCallback;
  * <li>支持结构化参数树和返回值 schema</li>
  * </ul>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface CodeactTool extends ToolCallback {

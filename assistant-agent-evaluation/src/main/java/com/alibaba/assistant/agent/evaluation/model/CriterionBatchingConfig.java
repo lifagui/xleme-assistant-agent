@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * Configuration for batching and concurrency at the criterion level.
  * Enables a criterion to process collections in batches with controlled concurrency.
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CriterionBatchingConfig {

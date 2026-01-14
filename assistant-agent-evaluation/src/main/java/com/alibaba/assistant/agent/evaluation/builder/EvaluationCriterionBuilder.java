@@ -28,7 +28,7 @@ import java.util.Map;
 /**
  * Builder for creating EvaluationCriterion instances
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class EvaluationCriterionBuilder {
 

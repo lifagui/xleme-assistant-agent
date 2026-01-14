@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  *
  * <p>使用线程安全的 ConcurrentHashMap 存储工具，并支持结构化工具定义。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DefaultCodeactToolRegistry implements CodeactToolRegistry {

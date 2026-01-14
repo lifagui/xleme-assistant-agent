@@ -53,7 +53,7 @@ import java.util.List;
  * 用户可以通过配置属性自定义评估行为，或通过实现 {@link EvaluationCriterionProvider}
  * 接口添加自定义 Criterion。
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Configuration

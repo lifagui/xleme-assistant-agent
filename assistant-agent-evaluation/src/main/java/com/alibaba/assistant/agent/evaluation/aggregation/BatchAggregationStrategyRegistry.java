@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Registry for batch aggregation strategies.
  * Manages available aggregation strategies and provides lookup by strategy ID.
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class BatchAggregationStrategyRegistry {
 

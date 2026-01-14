@@ -31,7 +31,7 @@ import java.util.List;
  * 默认学习策略实现
  * 实现学习的决策逻辑
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DefaultLearningStrategy implements LearningStrategy {

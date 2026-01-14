@@ -31,7 +31,7 @@ import java.util.UUID;
  * Mock 项目上下文搜索Provider（基于Store/代码索引）
  * 提供简单的模拟实现用于演示和测试
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 @Component
 public class MockProjectContextSearchProvider implements SearchProvider {

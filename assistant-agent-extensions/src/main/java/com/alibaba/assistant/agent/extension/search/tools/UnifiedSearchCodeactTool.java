@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
  *
  * <p>该工具可以同时搜索多个数据源（项目、知识库、Web等），并聚合结果。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class UnifiedSearchCodeactTool implements SearchCodeactTool {

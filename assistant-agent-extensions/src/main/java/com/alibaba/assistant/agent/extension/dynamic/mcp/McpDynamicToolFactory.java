@@ -44,7 +44,7 @@ import java.util.Map;
  * <p>工厂会自动从 ToolCallback 中推断类名和方法名，无需手动配置 McpServerSpec。
  * 如果需要自定义类名/描述，可以通过 serverSpecs 传入额外的映射信息。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class McpDynamicToolFactory implements DynamicCodeactToolFactory {

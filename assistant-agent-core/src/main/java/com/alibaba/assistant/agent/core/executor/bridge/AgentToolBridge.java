@@ -28,7 +28,7 @@ import java.util.Map;
  * Bridge object to expose agent tools to Python code.
  * Python code can call: agent_tools.call("tool_name", args)
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class AgentToolBridge {

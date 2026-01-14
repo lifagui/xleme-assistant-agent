@@ -23,7 +23,7 @@ import java.util.Map;
  * 模型调用记录
  * 记录模型调用的信息，包括输入、输出、token使用量等
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ModelCallRecord {

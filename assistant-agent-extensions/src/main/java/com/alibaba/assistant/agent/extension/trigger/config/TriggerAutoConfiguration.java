@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * Trigger模块自动配置
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Configuration

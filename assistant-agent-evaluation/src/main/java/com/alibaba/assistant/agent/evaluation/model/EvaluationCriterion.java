@@ -24,7 +24,7 @@ import java.util.Map;
  * Represents a single evaluation criterion
  * Each criterion is an independent evaluation dimension with its own configuration
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class EvaluationCriterion {
 

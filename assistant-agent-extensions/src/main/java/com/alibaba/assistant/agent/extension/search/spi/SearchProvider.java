@@ -25,7 +25,7 @@ import java.util.List;
  * 搜索数据源提供者SPI接口
  * 代表某一类数据源（项目上下文、知识库、Web搜索等）的搜索能力
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public interface SearchProvider {
 	/**

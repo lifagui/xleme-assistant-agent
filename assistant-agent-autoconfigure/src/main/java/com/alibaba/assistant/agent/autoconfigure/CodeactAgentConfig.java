@@ -47,7 +47,7 @@ import java.util.List;
  *
  * <p>配置 CodeactAgent，提供代码生成和执行能力。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Configuration

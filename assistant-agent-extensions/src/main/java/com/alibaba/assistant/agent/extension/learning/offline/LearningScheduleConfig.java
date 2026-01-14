@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.extension.learning.offline;
  * 学习调度配置
  * 定义离线学习任务的调度参数
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LearningScheduleConfig {

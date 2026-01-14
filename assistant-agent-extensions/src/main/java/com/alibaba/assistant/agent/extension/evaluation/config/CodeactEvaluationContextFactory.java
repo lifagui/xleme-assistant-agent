@@ -33,7 +33,7 @@ import java.util.Optional;
  * 负责将 Codeact 的 OverAllState、模型请求/响应、工具上下文等信息，
  * 转换为统一的 EvaluationContext
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public class CodeactEvaluationContextFactory {
 

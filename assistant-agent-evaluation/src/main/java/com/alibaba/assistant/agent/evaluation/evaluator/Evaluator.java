@@ -22,7 +22,7 @@ import com.alibaba.assistant.agent.evaluation.model.CriterionResult;
  * Interface for evaluators that execute evaluation logic
  * Can be LLM-based, rule-based, or external service-based
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public interface Evaluator {
 

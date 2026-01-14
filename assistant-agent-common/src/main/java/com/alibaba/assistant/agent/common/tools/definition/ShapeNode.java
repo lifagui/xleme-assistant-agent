@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.common.tools.definition;
  *
  * <p>描述工具返回值的结构，用于生成返回值文档和类型提示。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public abstract class ShapeNode {

@@ -32,7 +32,7 @@ import java.util.List;
  * <li>显示名称与别名</li>
  * </ul>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface CodeactToolMetadata extends ToolMetadata {

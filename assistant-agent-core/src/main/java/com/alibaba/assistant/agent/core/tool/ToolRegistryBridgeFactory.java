@@ -13,46 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.alibaba.assistant.agent.core.tool;
 
-package com.alibaba.assistant.agent.extension.trigger.model;
+import org.springframework.ai.chat.model.ToolContext;
 
 /**
- * 执行状态枚举
+ * ToolRegistryBridge factory interface.
+ *
+ * <p>This is an extension point for external modules (for example, meow-agent-server)
+ * to provide a customized ToolRegistryBridge implementation, such as a bridge that
+ * records tool invocations.
  *
  * @author Assistant Agent Team
  * @since 1.0.0
  */
-public enum ExecutionStatus {
+public interface ToolRegistryBridgeFactory {
 
-	/**
-	 * 待执行状态（已排队但未开始）
-	 */
-	PENDING,
-
-	/**
-	 * 执行中状态
-	 */
-	RUNNING,
-
-	/**
-	 * 执行成功状态
-	 */
-	SUCCESS,
-
-	/**
-	 * 执行失败状态
-	 */
-	FAILED,
-
-	/**
-	 * 跳过执行状态（条件不满足）
-	 */
-	SKIPPED,
-
-	/**
-	 * 执行超时状态
-	 */
-	TIMEOUT
-
+    /**
+     * Create a ToolRegistryBridge instance.
+     *
+     * @param registry tool registry
+     * @param toolContext tool context
+     * @return a ToolRegistryBridge instance
+     */
+    ToolRegistryBridge create(CodeactToolRegistry registry, ToolContext toolContext);
 }
-

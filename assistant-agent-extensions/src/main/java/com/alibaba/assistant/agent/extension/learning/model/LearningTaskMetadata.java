@@ -25,7 +25,7 @@ import java.util.UUID;
  * 学习任务元数据
  * 包含任务的基本信息和元数据
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LearningTaskMetadata {

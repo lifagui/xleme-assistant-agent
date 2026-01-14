@@ -23,7 +23,7 @@ import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
  * 触发器执行后端接口
  * 负责将触发器映射到实际的调度任务
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface ExecutionBackend {

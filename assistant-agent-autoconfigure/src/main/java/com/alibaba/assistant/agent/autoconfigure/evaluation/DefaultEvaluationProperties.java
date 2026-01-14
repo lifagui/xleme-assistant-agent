@@ -22,7 +22,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  *
  * <p>控制 react-phase-suite 和 codeact-phase-suite 的行为。
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @ConfigurationProperties(prefix = "spring.ai.alibaba.codeact.starter.evaluation")

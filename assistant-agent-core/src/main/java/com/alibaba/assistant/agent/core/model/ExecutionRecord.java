@@ -25,7 +25,7 @@ import java.util.Map;
  * Records the execution of a piece of code.
  * Stores execution results, errors, and execution metadata.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ExecutionRecord implements Serializable {

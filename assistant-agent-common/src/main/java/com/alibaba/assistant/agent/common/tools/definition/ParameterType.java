@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.common.tools.definition;
 /**
  * 参数类型枚举 - 对应 JSON Schema 的 type 字段。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public enum ParameterType {

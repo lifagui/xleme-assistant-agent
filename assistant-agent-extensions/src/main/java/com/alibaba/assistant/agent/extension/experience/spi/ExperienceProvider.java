@@ -11,7 +11,7 @@ import java.util.List;
  * 经验读取SPI接口
  * 负责根据查询条件返回经验列表
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public interface ExperienceProvider {
 

@@ -26,13 +26,16 @@ import com.alibaba.assistant.agent.core.executor.bridge.StateBridge;
 import com.alibaba.assistant.agent.core.model.ExecutionRecord;
 import com.alibaba.assistant.agent.core.model.GeneratedCode;
 import com.alibaba.assistant.agent.core.tool.CodeactToolRegistry;
+import com.alibaba.assistant.agent.core.tool.DefaultToolRegistryBridgeFactory;
 import com.alibaba.assistant.agent.core.tool.ToolRegistryBridge;
+import com.alibaba.assistant.agent.core.tool.ToolRegistryBridgeFactory;
 import com.alibaba.cloud.ai.graph.OverAllState;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.HostAccess;
 import org.graalvm.polyglot.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.chat.model.ToolContext;
 import org.springframework.ai.tool.ToolCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -50,7 +53,7 @@ import java.util.regex.Pattern;
  * GraalVM-based code executor.
  * Executes Python code using GraalVM's Polyglot API.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class GraalCodeExecutor {
@@ -68,6 +71,9 @@ public class GraalCodeExecutor {
 	// Executable tool registry
 	private final CodeactToolRegistry codeactToolRegistry;
 
+	// ToolRegistryBridge factory for customization
+	private final ToolRegistryBridgeFactory toolRegistryBridgeFactory;
+
 	// Security settings
 	private final boolean allowIO;
 	private final boolean allowNativeAccess;
@@ -78,7 +84,7 @@ public class GraalCodeExecutor {
 			CodeContext codeContext,
 			List<ToolCallback> tools,
 			OverAllState state) {
-		this(environmentManager, codeContext, tools, state, null, false, false, 30000);
+		this(environmentManager, codeContext, tools, state, null, null, false, false, 30000);
 	}
 
 	public GraalCodeExecutor(
@@ -89,7 +95,7 @@ public class GraalCodeExecutor {
 			boolean allowIO,
 			boolean allowNativeAccess,
 			long executionTimeoutMs) {
-		this(environmentManager, codeContext, tools, state, null, allowIO, allowNativeAccess, executionTimeoutMs);
+		this(environmentManager, codeContext, tools, state, null, null, allowIO, allowNativeAccess, executionTimeoutMs);
 	}
 
 	public GraalCodeExecutor(
@@ -101,9 +107,38 @@ public class GraalCodeExecutor {
 			boolean allowIO,
 			boolean allowNativeAccess,
 			long executionTimeoutMs) {
+		this(environmentManager, codeContext, tools, state, codeactToolRegistry, null, allowIO, allowNativeAccess, executionTimeoutMs);
+	}
+
+	/**
+	 * Full constructor that supports a custom ToolRegistryBridgeFactory.
+	 *
+	 * @param environmentManager runtime environment manager
+	 * @param codeContext code context
+	 * @param tools tool callbacks
+	 * @param state overall state
+	 * @param codeactToolRegistry Codeact tool registry
+	 * @param toolRegistryBridgeFactory custom ToolRegistryBridge factory; if null, the default factory is used
+	 * @param allowIO whether to allow IO
+	 * @param allowNativeAccess whether to allow native access
+	 * @param executionTimeoutMs execution timeout in milliseconds
+	 */
+	public GraalCodeExecutor(
+			RuntimeEnvironmentManager environmentManager,
+			CodeContext codeContext,
+			List<ToolCallback> tools,
+			OverAllState state,
+			CodeactToolRegistry codeactToolRegistry,
+			ToolRegistryBridgeFactory toolRegistryBridgeFactory,
+			boolean allowIO,
+			boolean allowNativeAccess,
+			long executionTimeoutMs) {
 		this.environmentManager = environmentManager;
 		this.codeContext = codeContext;
 		this.codeactToolRegistry = codeactToolRegistry;
+		this.toolRegistryBridgeFactory = toolRegistryBridgeFactory != null
+				? toolRegistryBridgeFactory
+				: DefaultToolRegistryBridgeFactory.INSTANCE;
 		this.allowIO = allowIO;
 		this.allowNativeAccess = allowNativeAccess;
 		this.executionTimeoutMs = executionTimeoutMs;
@@ -113,8 +148,8 @@ public class GraalCodeExecutor {
 		this.stateBridge = new StateBridge(state);
 		this.loggerBridge = new LoggerBridge();
 
-		logger.info("GraalCodeExecutor#<init> 初始化完成: language={}, allowIO={}, timeout={}ms, executableTools={}",
-			codeContext.getLanguage(), allowIO, executionTimeoutMs, codeactToolRegistry != null);
+		logger.info("GraalCodeExecutor#<init> 初始化完成: language={}, allowIO={}, timeout={}ms, executableTools={}, customBridgeFactory={}",
+				codeContext.getLanguage(), allowIO, executionTimeoutMs, codeactToolRegistry != null, toolRegistryBridgeFactory != null);
 	}
 
 	/**
@@ -569,14 +604,13 @@ public class GraalCodeExecutor {
 		logger.info("GraalCodeExecutor#injectCodeactTools - reason=开始注入CodeactTool到Python环境");
 
 		// Create tool context for all tools
-		org.springframework.ai.chat.model.ToolContext toolContext =
-			new org.springframework.ai.chat.model.ToolContext(Map.of());
+		ToolContext toolContext = new ToolContext(Map.of());
 
-		// Create and inject ToolRegistryBridge
-		ToolRegistryBridge bridge =
-			new ToolRegistryBridge(registry, toolContext);
+		// Create and inject ToolRegistryBridge using factory
+		ToolRegistryBridge bridge = toolRegistryBridgeFactory.create(registry, toolContext);
 		context.getBindings("python").putMember("__tool_registry__", bridge);
-		logger.debug("GraalCodeExecutor#injectCodeactTools - reason=ToolRegistryBridge注入完成");
+		logger.debug("GraalCodeExecutor#injectCodeactTools - reason=ToolRegistryBridge注入完成, bridgeClass={}",
+				bridge.getClass().getSimpleName());
 
 		// Get all tools for this language
 		List<CodeactTool> tools = registry.getToolsForLanguage(language);
@@ -587,10 +621,8 @@ public class GraalCodeExecutor {
 		}
 
 		// Group tools by targetClassName
-		Map<String, List<CodeactTool>> toolsByClass =
-			new HashMap<>();
-		List<CodeactTool> globalTools =
-			new ArrayList<>();
+		Map<String, List<CodeactTool>> toolsByClass = new HashMap<>();
+		List<CodeactTool> globalTools = new ArrayList<>();
 
 		for (CodeactTool tool : tools) {
 			String className = tool.getCodeactMetadata().targetClassName();
@@ -781,8 +813,6 @@ public class GraalCodeExecutor {
 	public CodeContext getCodeContext() {
 		return codeContext;
 	}
-
-	// ...existing code...
 
 	public RuntimeEnvironmentManager getEnvironmentManager() {
 		return environmentManager;

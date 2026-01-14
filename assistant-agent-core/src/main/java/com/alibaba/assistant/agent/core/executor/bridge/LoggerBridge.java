@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * Bridge object to expose logging capabilities to Python code.
  * Python code can call: logger.info("message"), logger.error("message"), etc.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LoggerBridge {

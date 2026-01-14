@@ -22,7 +22,7 @@ import java.util.Map;
  * Criterion execution context - provides all the information that a single criterion
  * evaluation needs, including input context, dependency results, and criterion configuration.
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class CriterionExecutionContext {
 

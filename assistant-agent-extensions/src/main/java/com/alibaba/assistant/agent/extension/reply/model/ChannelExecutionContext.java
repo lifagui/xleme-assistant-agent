@@ -7,7 +7,7 @@ import java.util.Map;
  * 渠道执行上下文
  * 携带会话、用户、项目等上下文信息
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class ChannelExecutionContext {
 

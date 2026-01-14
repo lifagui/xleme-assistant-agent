@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.common.tools;
  *
  * <p>用于定义学习任务相关的工具，支持触发学习、查询学习状态等功能。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface LearningCodeactTool extends CodeactTool {

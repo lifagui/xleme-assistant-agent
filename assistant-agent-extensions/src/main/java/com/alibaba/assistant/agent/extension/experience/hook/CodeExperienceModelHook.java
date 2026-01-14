@@ -34,7 +34,7 @@ import java.util.concurrent.CompletableFuture;
  * 2. 查询匹配的代码经验（语言、标签等）
  * 3. 直接修改messages列表，注入代码经验
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @HookPositions(HookPosition.BEFORE_MODEL)
 public class CodeExperienceModelHook extends ModelHook {

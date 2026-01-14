@@ -30,7 +30,7 @@ import java.util.Map;
  * OR gate aggregation strategy - returns true if ANY batch result is true.
  * Suitable for scenarios like "does at least one tool satisfy the requirement".
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class AnyTrueAggregationStrategy implements BatchAggregationStrategy {
 

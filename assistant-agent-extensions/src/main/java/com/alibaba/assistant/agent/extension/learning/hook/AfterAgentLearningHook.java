@@ -43,7 +43,7 @@ import java.util.concurrent.CompletableFuture;
  * Agent执行完成后学习Hook
  * 在Agent执行完成后触发学习，收集完整的执行信息
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @HookPositions(HookPosition.AFTER_AGENT)

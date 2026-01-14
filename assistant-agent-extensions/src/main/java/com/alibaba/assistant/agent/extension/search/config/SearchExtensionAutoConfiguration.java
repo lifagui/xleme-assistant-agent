@@ -37,7 +37,7 @@ import java.util.List;
  * <p>框架只提供 SearchFacade、SearchCodeactToolFactory 等基础设施。
  * 具体的 SearchProvider 实现（如 Mock Provider）应由使用者在自己的模块中注册。
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 @AutoConfiguration
 @ConditionalOnProperty(prefix = "spring.ai.alibaba.codeact.extension.search", name = "enabled", havingValue = "true", matchIfMissing = true)

@@ -8,7 +8,7 @@ import java.util.UUID;
 /**
  * 经验核心领域对象
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public class Experience {
 

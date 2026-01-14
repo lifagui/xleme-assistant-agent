@@ -35,7 +35,7 @@ import java.util.concurrent.CompletableFuture;
  * 3. 查找现有SystemMessage并追加，或添加新的SystemMessage
  * 4. 通过返回Map.of("messages", newMessages)更新OverAllState
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @HookPositions(HookPosition.BEFORE_MODEL)
 public class CommonSenseExperienceModelHook extends ModelHook {

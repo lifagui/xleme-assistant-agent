@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * 搜索上下文信息（从OverAllState/Agent环境抽取）
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class SearchContext {
 	/**

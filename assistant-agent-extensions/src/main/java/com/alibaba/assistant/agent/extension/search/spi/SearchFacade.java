@@ -21,7 +21,7 @@ import com.alibaba.assistant.agent.extension.search.model.SearchResultSet;
 /**
  * 搜索门面接口，统一搜索入口
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public interface SearchFacade {
 	/**

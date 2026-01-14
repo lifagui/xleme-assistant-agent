@@ -33,7 +33,7 @@ import java.util.Set;
 /**
  * 工具定义解析器 - 从 inputSchema JSON 解析出 ParameterTree。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ToolDefinitionParser {

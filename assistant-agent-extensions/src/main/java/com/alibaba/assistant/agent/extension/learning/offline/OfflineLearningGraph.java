@@ -35,7 +35,7 @@ import java.util.concurrent.CompletableFuture;
  * 离线学习图
  * 构建用于离线批量学习的StateGraph，包含数据获取、预处理、提取、持久化等节点
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class OfflineLearningGraph {

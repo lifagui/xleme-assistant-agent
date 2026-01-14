@@ -23,7 +23,7 @@ import java.util.Map;
  * 学习上下文接口
  * 封装学习过程所需的所有上下文信息
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface LearningContext {

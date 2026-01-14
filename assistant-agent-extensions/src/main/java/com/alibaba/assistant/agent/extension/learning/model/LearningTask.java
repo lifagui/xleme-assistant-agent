@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.extension.learning.model;
  * 学习任务接口
  * 表示一个学习任务，包含学习所需的所有信息
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface LearningTask {

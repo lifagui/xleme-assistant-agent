@@ -29,7 +29,7 @@ import java.util.Optional;
  *
  * <p>管理和查询所有注册的 CodeactTool 实例，并提供结构化工具定义和返回值 schema 的查询能力。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface CodeactToolRegistry {

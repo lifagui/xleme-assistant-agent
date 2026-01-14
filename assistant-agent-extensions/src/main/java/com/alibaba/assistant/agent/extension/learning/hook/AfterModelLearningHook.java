@@ -42,7 +42,7 @@ import java.util.concurrent.CompletableFuture;
  * 模型调用完成后学习Hook
  * 在模型调用完成后触发学习，收集模型调用信息
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @HookPositions(HookPosition.AFTER_MODEL)

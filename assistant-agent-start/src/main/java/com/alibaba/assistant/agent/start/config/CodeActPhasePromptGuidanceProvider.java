@@ -31,7 +31,7 @@ import java.util.Map;
  *   <li>purpose=操作：需要先写代码，然后反问用户是否执行，用户说执行再开始执行代码</li>
  * </ul>
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Component

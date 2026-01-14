@@ -43,7 +43,7 @@ import java.util.List;
  * }
  * </pre>
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface EvaluationCriterionProvider {

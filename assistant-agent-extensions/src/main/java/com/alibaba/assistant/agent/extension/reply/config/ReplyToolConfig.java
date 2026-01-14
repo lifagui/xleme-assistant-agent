@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 回复工具配置模型
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class ReplyToolConfig {
 

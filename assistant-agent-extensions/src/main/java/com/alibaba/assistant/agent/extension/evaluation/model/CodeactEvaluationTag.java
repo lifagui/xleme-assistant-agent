@@ -19,7 +19,7 @@ package com.alibaba.assistant.agent.extension.evaluation.model;
  * Codeact Evaluation 上下文字段标签常量
  * 定义在构造 EvaluationContext 时使用的统一 key
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public final class CodeactEvaluationTag {
 

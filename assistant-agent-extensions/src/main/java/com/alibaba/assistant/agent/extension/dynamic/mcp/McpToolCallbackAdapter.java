@@ -34,7 +34,7 @@ import java.util.Map;
  * <p>将 MCP Client Boot Starter 提供的 ToolCallback 适配为 CodeactTool，
  * 补齐 CodeactToolMetadata。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class McpToolCallbackAdapter extends AbstractDynamicCodeactTool {

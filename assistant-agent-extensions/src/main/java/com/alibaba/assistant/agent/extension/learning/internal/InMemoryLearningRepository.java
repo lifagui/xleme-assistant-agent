@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * 基于ConcurrentHashMap的内存存储，用于开发和测试
  *
  * @param <T> 学习记录类型
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class InMemoryLearningRepository<T> implements LearningRepository<T> {

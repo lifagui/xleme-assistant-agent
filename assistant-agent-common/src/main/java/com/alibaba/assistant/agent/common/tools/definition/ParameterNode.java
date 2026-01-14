@@ -25,7 +25,7 @@ import java.util.Objects;
  *
  * <p>从 JSON Schema 解析得到，包含参数的名称、类型、描述、约束等信息。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ParameterNode {

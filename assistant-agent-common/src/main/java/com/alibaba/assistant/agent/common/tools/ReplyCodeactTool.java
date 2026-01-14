@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.common.tools;
  *
  * <p>用于定义回复相关的工具，支持向用户发送消息等功能。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface ReplyCodeactTool extends CodeactTool {

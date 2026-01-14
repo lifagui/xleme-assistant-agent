@@ -26,7 +26,7 @@ import java.util.Optional;
  * Bridge object to expose agent state to Python code.
  * Python code can call: agent_state.get("key"), agent_state.set("key", value)
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class StateBridge {

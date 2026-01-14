@@ -37,7 +37,7 @@ import java.util.function.BiFunction;
  * Tool for executing generated code.
  * Uses GraalCodeExecutor to run Python code in a sandboxed environment.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ExecuteCodeTool implements BiFunction<ExecuteCodeTool.Request, ToolContext, ExecuteCodeTool.Response> {

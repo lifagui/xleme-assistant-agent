@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.common.tools.definition;
 /**
  * Schema 来源枚举。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public enum SchemaSource {

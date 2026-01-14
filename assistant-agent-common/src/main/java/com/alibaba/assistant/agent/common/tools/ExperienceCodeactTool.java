@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.common.tools;
  *
  * <p>用于定义经验管理相关的工具，支持保存、查询、更新经验等功能。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface ExperienceCodeactTool extends CodeactTool {

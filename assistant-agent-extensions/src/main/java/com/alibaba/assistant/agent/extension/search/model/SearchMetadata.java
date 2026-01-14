@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * 搜索元数据
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class SearchMetadata {
 	/**

@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  *
  * <p>包含工具的所有参数信息，用于生成代码签名和文档。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ParameterTree {

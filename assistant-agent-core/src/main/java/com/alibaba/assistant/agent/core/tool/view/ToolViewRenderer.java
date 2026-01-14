@@ -21,7 +21,7 @@ import com.alibaba.assistant.agent.common.tools.definition.ReturnSchema;
 /**
  * 工具视图渲染器接口 - 将结构化工具定义渲染为目标语言的代码 stub。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface ToolViewRenderer {

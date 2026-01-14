@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * <p>将含特殊字符/中文的名称转换为可作为类名/方法名的标识符。
  * 支持中文转拼音，特殊字符统一转为下划线。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class NameNormalizer {

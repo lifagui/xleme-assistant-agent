@@ -34,7 +34,7 @@ import java.util.List;
  * <p>实现代码生成的业务逻辑，图结构为：START -> code_gen -> END
  * <p>不需要多轮推理，只负责一次性代码生成
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class CodeGeneratorSubAgent extends CodeactSubAgent {

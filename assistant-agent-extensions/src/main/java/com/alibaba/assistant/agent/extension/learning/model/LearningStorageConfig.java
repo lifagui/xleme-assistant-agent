@@ -23,7 +23,7 @@ import java.util.Map;
  * 学习存储配置
  * 定义学习记录如何存储，包括命名空间、存储策略等
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LearningStorageConfig {

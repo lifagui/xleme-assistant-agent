@@ -34,7 +34,7 @@ import java.util.List;
  * <p>Example 层只负责定义 Criterion 的结构和数据，不包含评估器创建逻辑。
  * 评估器由 Starter 层自动装配。
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Component

@@ -30,7 +30,7 @@ import java.util.Map;
  * AND gate aggregation strategy - returns true if ALL batch results are true.
  * Suitable for scenarios like "do all test cases pass".
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class AllTrueAggregationStrategy implements BatchAggregationStrategy {
 

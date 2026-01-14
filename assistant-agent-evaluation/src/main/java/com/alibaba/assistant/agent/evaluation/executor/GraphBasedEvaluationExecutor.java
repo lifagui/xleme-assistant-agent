@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * Graph-based evaluation executor that uses spring-ai-alibaba-graph-core
  * Compiles evaluation suite into StateGraph and executes with dependency management
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class GraphBasedEvaluationExecutor {
 

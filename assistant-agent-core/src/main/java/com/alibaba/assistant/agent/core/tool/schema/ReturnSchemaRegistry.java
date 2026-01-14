@@ -25,7 +25,7 @@ import java.util.Optional;
  *
  * <p>管理工具的返回值结构信息，支持声明式定义和运行时观测两种来源。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface ReturnSchemaRegistry {

@@ -19,7 +19,7 @@ package com.alibaba.assistant.agent.common.constant;
  * Constants for OverAllState keys used by CodeactAgent.
  * These keys are used to store and retrieve data from the agent's state.
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public final class CodeactStateKeys {

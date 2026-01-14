@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * 默认学习执行器实现
  * 负责协调提取器、仓库和策略，执行学习任务
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DefaultLearningExecutor implements LearningExecutor {

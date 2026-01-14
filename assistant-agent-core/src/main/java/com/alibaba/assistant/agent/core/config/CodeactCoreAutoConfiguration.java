@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Bean;
  *   <li>ReturnSchemaRegistry - 返回值 schema 注册表（进程内单例）</li>
  * </ul>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @AutoConfiguration

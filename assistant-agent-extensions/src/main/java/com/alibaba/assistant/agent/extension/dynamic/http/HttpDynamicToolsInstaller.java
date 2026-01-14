@@ -30,7 +30,7 @@ import java.util.List;
  *
  * <p>提供便捷的方法将 OpenAPI 定义的工具注册到 CodeactToolRegistry。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class HttpDynamicToolsInstaller {

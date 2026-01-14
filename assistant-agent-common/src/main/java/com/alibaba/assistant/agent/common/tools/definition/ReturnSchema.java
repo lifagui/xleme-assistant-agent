@@ -26,7 +26,7 @@ import java.util.Set;
  *
  * <p>可以来自工具作者声明或运行时观测。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ReturnSchema {

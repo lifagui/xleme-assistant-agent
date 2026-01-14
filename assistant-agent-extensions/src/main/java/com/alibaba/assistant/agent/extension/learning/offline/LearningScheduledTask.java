@@ -31,7 +31,7 @@ import java.util.concurrent.CompletableFuture;
  * 学习调度任务
  * 包装学习图为定时任务，支持cron或固定间隔调度
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LearningScheduledTask {

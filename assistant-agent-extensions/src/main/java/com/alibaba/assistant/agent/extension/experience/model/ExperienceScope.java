@@ -4,7 +4,7 @@ package com.alibaba.assistant.agent.extension.experience.model;
  * 经验生效范围枚举
  * 查询时优先级从高到低：USER + PROJECT -> USER -> TEAM + PROJECT -> TEAM -> PROJECT -> GLOBAL
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public enum ExperienceScope {
 

@@ -38,7 +38,7 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 /**
  * Builder for creating EvaluationSuite instances
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class EvaluationSuiteBuilder {
 

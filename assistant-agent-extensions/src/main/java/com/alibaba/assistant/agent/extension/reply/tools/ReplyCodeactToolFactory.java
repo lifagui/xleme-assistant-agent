@@ -32,7 +32,7 @@ import java.util.Map;
  *
  * <p>负责根据配置创建 ReplyCodeactTool 实例。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ReplyCodeactToolFactory {

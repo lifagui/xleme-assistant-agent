@@ -43,7 +43,7 @@ import java.util.*;
  *
  * <p>将原有的 ReplyTool 改造为实现 CodeactTool 接口，支持 React 和 CodeAct 两个阶段。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class BaseReplyCodeactTool implements ReplyCodeactTool {

@@ -12,7 +12,7 @@ import java.util.Optional;
  * 经验写入与管理SPI接口
  * 负责经验池的增删改查管理
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public interface ExperienceRepository {
 

@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.extension.dynamic.http;
  *
  * <p>定义要暴露的 HTTP endpoint（method + path）。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class EndpointSpec {

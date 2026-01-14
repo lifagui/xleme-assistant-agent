@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * <p>包含工厂创建工具时所需的共享资源和配置。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DynamicToolFactoryContext {

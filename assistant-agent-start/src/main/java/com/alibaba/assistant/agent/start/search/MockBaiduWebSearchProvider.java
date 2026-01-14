@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * Mock 百度Web搜索Provider
  * 通过百度搜索API获取搜索结果，用于演示和测试
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 @Component
 public class MockBaiduWebSearchProvider implements SearchProvider {

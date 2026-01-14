@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * 联合类型节点 - 表示多种可能的类型。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class UnionShapeNode extends ShapeNode {

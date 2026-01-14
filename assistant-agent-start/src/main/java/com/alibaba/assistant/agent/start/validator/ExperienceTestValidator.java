@@ -21,7 +21,7 @@ import java.util.Set;
  * <p>Tests experience query functionality after application startup to ensure
  * experience hooks are working correctly.
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Component

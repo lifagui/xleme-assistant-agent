@@ -34,7 +34,7 @@ import java.util.List;
  * <p>提供便捷的方法将 MCP 工具注册到 CodeactToolRegistry。
  * 复用 MCP Client Boot Starter 提供的 ToolCallbackProvider。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class McpDynamicToolsInstaller {

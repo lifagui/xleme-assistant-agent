@@ -28,7 +28,7 @@ import java.util.List;
  *
  * <p>负责创建所有 Trigger 相关的 CodeactTool 实例。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class TriggerCodeactToolFactory {

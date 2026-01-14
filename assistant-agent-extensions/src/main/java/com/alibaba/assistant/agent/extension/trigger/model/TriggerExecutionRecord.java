@@ -24,7 +24,7 @@ import java.util.Map;
  * 触发器执行记录
  * 代表一次触发器执行过程的完整记录
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class TriggerExecutionRecord {

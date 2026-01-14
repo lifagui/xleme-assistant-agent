@@ -23,7 +23,7 @@ import java.util.Map;
  * 工具调用记录
  * 记录工具的调用信息，包括输入、输出、执行时间等
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ToolCallRecord {

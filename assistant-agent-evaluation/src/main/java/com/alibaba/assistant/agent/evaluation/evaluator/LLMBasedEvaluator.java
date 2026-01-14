@@ -36,7 +36,7 @@ import java.util.Map;
  * LLM-based evaluator that uses ChatModel to evaluate criteria
  * Provides default prompt assembly logic and supports custom prompts
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class LLMBasedEvaluator implements Evaluator {
 

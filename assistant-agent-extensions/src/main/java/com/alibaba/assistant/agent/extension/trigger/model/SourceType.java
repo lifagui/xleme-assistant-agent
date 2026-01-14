@@ -19,7 +19,7 @@ package com.alibaba.assistant.agent.extension.trigger.model;
 /**
  * 来源类型枚举
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public enum SourceType {

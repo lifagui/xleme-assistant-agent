@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.common.tools;
  *
  * <p>用于定义搜索相关的工具，支持项目搜索、知识库搜索、Web 搜索等功能。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface SearchCodeactTool extends CodeactTool {

@@ -19,7 +19,7 @@ import java.util.List;
  * <p>框架只提供 ReplyCodeactToolFactory 等基础设施。
  * 具体的 ReplyChannelDefinition 实现（如 IDE 渠道）应由使用者在自己的模块中注册。
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 @Configuration
 @EnableConfigurationProperties(ReplyExtensionProperties.class)

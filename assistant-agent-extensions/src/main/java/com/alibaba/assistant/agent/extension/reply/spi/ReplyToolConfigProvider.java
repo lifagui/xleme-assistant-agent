@@ -8,7 +8,7 @@ import java.util.List;
  * 回复工具配置提供者接口
  * 实现此接口并注册为@Bean，可提供动态配置
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public interface ReplyToolConfigProvider {
 

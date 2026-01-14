@@ -10,7 +10,7 @@ import java.util.List;
  *
  * <p>Convention over Configuration: 默认提供一个 send_message 工具
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 @ConfigurationProperties(prefix = "spring.ai.alibaba.codeact.extension.reply")
 public class ReplyExtensionProperties {

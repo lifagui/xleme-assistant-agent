@@ -31,7 +31,7 @@ import java.util.Map;
  * 默认学习上下文实现
  * 提供学习上下文的默认实现和Builder模式
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DefaultLearningContext implements LearningContext {

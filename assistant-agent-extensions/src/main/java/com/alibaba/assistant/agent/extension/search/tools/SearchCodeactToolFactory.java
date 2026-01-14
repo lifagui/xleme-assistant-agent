@@ -29,7 +29,7 @@ import java.util.List;
  *
  * <p>负责根据 SearchProvider 创建对应的 SearchCodeactTool 实例。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class SearchCodeactToolFactory {

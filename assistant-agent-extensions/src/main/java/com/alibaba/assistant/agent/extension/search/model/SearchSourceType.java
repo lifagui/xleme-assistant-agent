@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.extension.search.model;
 /**
  * 搜索数据源类型枚举
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public enum SearchSourceType {
 	/**

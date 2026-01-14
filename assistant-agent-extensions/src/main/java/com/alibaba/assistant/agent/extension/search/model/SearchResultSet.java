@@ -20,7 +20,7 @@ import java.util.*;
 /**
  * 搜索结果集合
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class SearchResultSet {
 	/**

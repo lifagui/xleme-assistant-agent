@@ -24,7 +24,7 @@ import java.util.List;
  * Strategy interface for aggregating batch evaluation results.
  * Implementations define how multiple batch results are combined into a single result.
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public interface BatchAggregationStrategy {
 

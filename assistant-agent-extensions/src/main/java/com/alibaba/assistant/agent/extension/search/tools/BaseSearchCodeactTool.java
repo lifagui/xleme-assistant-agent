@@ -43,7 +43,7 @@ import java.util.*;
  *
  * <p>将 SearchProvider 适配为实现 SearchCodeactTool 接口，支持 React 和 CodeAct 两个阶段。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class BaseSearchCodeactTool implements SearchCodeactTool {

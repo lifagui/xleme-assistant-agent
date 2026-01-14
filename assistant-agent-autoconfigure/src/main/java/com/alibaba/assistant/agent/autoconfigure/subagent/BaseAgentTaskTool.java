@@ -39,7 +39,7 @@ import java.util.function.BiFunction;
  * <li>从 OverAllState 中提取结果</li>
  * </ul>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class BaseAgentTaskTool implements BiFunction<BaseAgentTaskTool.TaskRequest, ToolContext, String> {

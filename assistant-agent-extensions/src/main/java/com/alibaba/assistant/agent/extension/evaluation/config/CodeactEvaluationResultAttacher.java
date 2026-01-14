@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * Codeact Evaluation 结果附加器
  * 负责将 EvaluationResult 安全地写回 OverAllState
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public class CodeactEvaluationResultAttacher {
 

@@ -4,7 +4,7 @@ package com.alibaba.assistant.agent.extension.experience.model;
  * 经验查询上下文
  * Hook基于OverAllState/RunnableConfig构造的上下文信息
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public class ExperienceQueryContext {
 

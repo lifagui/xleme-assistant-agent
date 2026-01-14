@@ -24,7 +24,7 @@ import java.util.Map;
  * 触发器定义
  * 表示一个触发器实例的完整元数据定义
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class TriggerDefinition {

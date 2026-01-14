@@ -39,7 +39,7 @@ import java.util.Map;
 /**
  * 列出触发器 CodeactTool 实现 - 获取所有触发器列表。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ListTriggersCodeactTool implements TriggerCodeactTool {

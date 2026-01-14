@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.evaluation.model;
 /**
  * Status of criterion evaluation execution
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public enum CriterionStatus {
 	/**

@@ -29,7 +29,7 @@ import java.util.List;
  * 经验学习仓库
  * 将学习到的经验保存到经验仓库中，实现学习模块与经验模块的集成
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ExperienceLearningRepository implements LearningRepository<Experience> {

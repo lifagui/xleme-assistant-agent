@@ -23,7 +23,7 @@ import com.alibaba.assistant.agent.extension.learning.model.LearningTriggerConte
  * 学习策略接口
  * 定义学习的决策逻辑，如何时触发学习、如何选择提取器和仓库等
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface LearningStrategy {

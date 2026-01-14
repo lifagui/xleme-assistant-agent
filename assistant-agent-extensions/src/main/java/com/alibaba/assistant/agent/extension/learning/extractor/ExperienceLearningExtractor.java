@@ -46,7 +46,7 @@ import java.util.*;
  *   <li>结构化输出：标准的Experience对象</li>
  * </ul>
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ExperienceLearningExtractor implements LearningExtractor<Experience> {

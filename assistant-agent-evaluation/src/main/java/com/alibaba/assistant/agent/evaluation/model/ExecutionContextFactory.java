@@ -26,7 +26,7 @@ import java.util.Map;
  * This factory centralizes the creation logic and dependency resolution,
  * simplifying the construction of execution contexts for individual criteria.
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class ExecutionContextFactory {
 

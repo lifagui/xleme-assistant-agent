@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * Default implementation of EvaluationService
  * Uses graph-based executor for evaluation execution
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class DefaultEvaluationService implements EvaluationService {
 

@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * 数组类型节点 - 表示数组/列表结构。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ArrayShapeNode extends ShapeNode {

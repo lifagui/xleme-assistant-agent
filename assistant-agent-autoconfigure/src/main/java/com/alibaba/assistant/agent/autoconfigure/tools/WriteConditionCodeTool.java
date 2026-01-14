@@ -50,7 +50,7 @@ import java.util.function.BiFunction;
  * <li>额外处理：注册到 CodeContext 和持久化到 Store</li>
  * </ul>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class WriteConditionCodeTool implements BiFunction<WriteConditionCodeTool.Request, ToolContext, String> {

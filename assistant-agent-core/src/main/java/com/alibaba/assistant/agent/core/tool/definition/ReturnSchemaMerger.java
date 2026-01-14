@@ -33,7 +33,7 @@ import java.util.Set;
 /**
  * 返回值 Schema 合并器 - 实现 schema 的合并算法。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ReturnSchemaMerger {

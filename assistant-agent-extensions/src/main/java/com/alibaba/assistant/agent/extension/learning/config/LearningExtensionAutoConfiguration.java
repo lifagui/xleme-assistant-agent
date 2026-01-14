@@ -52,7 +52,7 @@ import java.util.List;
 /**
  * 学习模块自动配置类
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Configuration

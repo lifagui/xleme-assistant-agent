@@ -34,7 +34,7 @@ import java.util.concurrent.CompletableFuture;
  * 2. 将策略经验注入到初始messages中
  * 3. 影响Agent的整体行为模式
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @HookPositions(HookPosition.BEFORE_AGENT)
 public class ReactExperienceAgentHook extends AgentHook {

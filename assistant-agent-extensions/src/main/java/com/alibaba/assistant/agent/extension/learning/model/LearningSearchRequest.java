@@ -22,7 +22,7 @@ import java.time.Instant;
  * 学习搜索请求
  * 用于从学习仓库中查询学习记录
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LearningSearchRequest {

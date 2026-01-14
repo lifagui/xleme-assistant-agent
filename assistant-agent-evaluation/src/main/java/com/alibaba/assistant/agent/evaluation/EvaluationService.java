@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
  * Service interface for evaluation execution
  * Provides unified API for executing evaluations
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public interface EvaluationService {
 

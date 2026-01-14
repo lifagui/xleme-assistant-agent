@@ -21,7 +21,7 @@ package com.alibaba.assistant.agent.common.tools;
  * @param description 示例用途说明
  * @param codeSnippet 示例代码片段
  * @param expectedBehavior 预期行为或输出说明
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public record CodeExample(String description, String codeSnippet, String expectedBehavior) {

@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * 基于内存的经验仓库实现
  * 使用线程安全集合存储经验，适合本地开发与小规模POC
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public class InMemoryExperienceRepository implements ExperienceRepository {
 

@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  * <p>Starter 层通过此工厂创建评估器并自动注册。
  * Example 层只需提供经验数据。
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ExperienceRetrievalEvaluatorFactory {

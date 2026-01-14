@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
  * 学习执行器接口
  * 负责执行学习任务，将学习记录持久化
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface LearningExecutor {

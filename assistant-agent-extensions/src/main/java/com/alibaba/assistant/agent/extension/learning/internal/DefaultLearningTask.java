@@ -27,7 +27,7 @@ import com.alibaba.assistant.agent.extension.learning.model.*;
  * 默认学习任务实现
  * 提供学习任务的默认实现和Builder模式
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DefaultLearningTask implements LearningTask {

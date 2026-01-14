@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * 默认搜索门面实现
  * 协调多个SearchProvider，应用合并策略
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class DefaultSearchFacade implements SearchFacade {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultSearchFacade.class);

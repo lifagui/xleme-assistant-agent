@@ -25,7 +25,7 @@ import java.util.concurrent.*;
  * 异步学习处理器
  * 管理异步学习任务的执行，包括线程池管理和任务拒绝策略
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class AsyncLearningHandler {

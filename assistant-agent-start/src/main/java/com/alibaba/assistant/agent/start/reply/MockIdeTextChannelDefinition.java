@@ -29,7 +29,7 @@ import java.util.Map;
  * Mock IDE文本渠道定义
  * 向IDE发送纯文本消息（用于演示和测试）
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 @Component
 public class MockIdeTextChannelDefinition implements ReplyChannelDefinition {

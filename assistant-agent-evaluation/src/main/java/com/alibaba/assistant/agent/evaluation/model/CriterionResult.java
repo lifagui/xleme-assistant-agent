@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * Result of evaluating a single criterion
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class CriterionResult {
 

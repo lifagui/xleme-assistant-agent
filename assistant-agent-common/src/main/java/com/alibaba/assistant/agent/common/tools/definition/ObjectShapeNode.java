@@ -23,7 +23,7 @@ import java.util.Objects;
 /**
  * 对象类型节点 - 表示具有字段的对象结构。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ObjectShapeNode extends ShapeNode {

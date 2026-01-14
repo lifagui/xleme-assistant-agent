@@ -26,7 +26,7 @@ import java.util.Map;
 /**
  * A collection of evaluation criteria for a specific target
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class EvaluationSuite {
 

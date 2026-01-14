@@ -22,7 +22,7 @@ import java.time.Instant;
  * 学习结果
  * 表示学习任务执行后的结果
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LearningResult {

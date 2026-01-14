@@ -27,7 +27,7 @@ import org.springframework.ai.chat.model.ToolContext;
  * <p>这个类被注入到 GraalVM Python 环境中，Python 代码通过调用它来执行 CodeactTool。
  * 同时负责在工具调用完成后触发返回值结构的观测。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ToolRegistryBridge {

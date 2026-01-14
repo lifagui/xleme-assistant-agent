@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.extension.learning.model;
  * 学习触发来源枚举
  * 定义学习过程可以从哪些执行点触发
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public enum LearningTriggerSource {

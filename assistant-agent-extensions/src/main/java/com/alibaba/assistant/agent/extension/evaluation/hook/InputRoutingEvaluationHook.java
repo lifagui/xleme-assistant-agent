@@ -45,7 +45,7 @@ import java.util.concurrent.TimeUnit;
  * 输入路由评估 Hook
  * 在 BEFORE_AGENT 阶段评估用户输入清晰度与路由策略
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @HookPositions(HookPosition.BEFORE_AGENT)
 public class InputRoutingEvaluationHook extends AgentHook {

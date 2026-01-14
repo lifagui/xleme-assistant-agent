@@ -38,7 +38,7 @@ import java.util.concurrent.ScheduledFuture;
 /**
  * 基于Spring TaskScheduler的执行后端实现
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class SpringSchedulerExecutionBackend implements ExecutionBackend {

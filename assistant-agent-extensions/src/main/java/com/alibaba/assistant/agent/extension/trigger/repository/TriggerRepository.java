@@ -27,7 +27,7 @@ import java.util.Optional;
  * 触发器定义存储接口
  * 提供触发器定义的增删改查能力
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface TriggerRepository {

@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  * 基于内存的经验提供者实现
  * 从InMemoryExperienceRepository读取并过滤经验数据
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public class InMemoryExperienceProvider implements ExperienceProvider {
 

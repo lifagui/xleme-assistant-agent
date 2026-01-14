@@ -84,7 +84,7 @@ import java.util.function.BiFunction;
  *                            Store Persistence
  * </pre>
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class CodeactAgent extends ReactAgent {

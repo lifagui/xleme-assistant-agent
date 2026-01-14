@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * 经验模块自动配置类
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(ExperienceExtensionProperties.class)

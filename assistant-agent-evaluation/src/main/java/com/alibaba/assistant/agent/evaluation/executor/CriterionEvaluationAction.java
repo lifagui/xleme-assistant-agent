@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
  * Returns a Map containing the updated "results" to be merged into the main state
  * via graph-core's updateState mechanism.
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class CriterionEvaluationAction implements Function<OverAllState, Map<String, Object>> {
 

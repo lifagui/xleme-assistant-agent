@@ -31,7 +31,7 @@ import java.util.Map;
  *   <li>is_fuzzy=清晰：按照用户的要求进行操作</li>
  * </ul>
  *
- * @author Assistant AI Team
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Component

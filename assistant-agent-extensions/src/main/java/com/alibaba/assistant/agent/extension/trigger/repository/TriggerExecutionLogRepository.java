@@ -27,7 +27,7 @@ import java.util.Optional;
  * 触发器执行记录存储接口
  * 提供执行记录的增删改查能力
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface TriggerExecutionLogRepository {

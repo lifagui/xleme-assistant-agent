@@ -42,7 +42,7 @@ import java.util.*;
  * 工具调用学习拦截器
  * 拦截工具调用，收集工具使用信息并触发学习
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LearningToolInterceptor extends ToolInterceptor {

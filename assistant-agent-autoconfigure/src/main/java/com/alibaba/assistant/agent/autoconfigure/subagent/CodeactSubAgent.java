@@ -30,7 +30,7 @@ import java.util.List;
  * <p>继承自BaseAgent，拥有完整的Agent能力（hooks、interceptors、状态管理、日志等）
  * <p>子类需要实现initGraph()定义具体的图结构
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public abstract class CodeactSubAgent extends BaseAgent {

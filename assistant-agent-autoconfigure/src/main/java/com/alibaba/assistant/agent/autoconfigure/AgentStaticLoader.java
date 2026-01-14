@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * <p>这个加载器将预创建的 CodeactAgent 实例通过 AgentLoader 接口暴露给 spring-ai-alibaba-studio。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 @Component

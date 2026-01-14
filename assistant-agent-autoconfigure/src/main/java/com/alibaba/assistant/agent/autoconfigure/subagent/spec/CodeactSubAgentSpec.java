@@ -27,7 +27,7 @@ import java.util.List;
  *
  * <p>用于声明式配置Codeact子Agent，包括名称、描述、系统提示、模型、工具等。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class CodeactSubAgentSpec {

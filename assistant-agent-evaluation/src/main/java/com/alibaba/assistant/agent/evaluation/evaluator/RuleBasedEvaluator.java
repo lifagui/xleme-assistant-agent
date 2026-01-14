@@ -25,7 +25,7 @@ import java.util.function.Function;
  * Rule-based evaluator that uses Java logic for evaluation
  * Useful for simple checks, threshold-based evaluations, etc.
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class RuleBasedEvaluator implements Evaluator {
 

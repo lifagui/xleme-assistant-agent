@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.evaluation.model;
 /**
  * Policy for controlling LLM reasoning output
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public enum ReasoningPolicy {
 	/**

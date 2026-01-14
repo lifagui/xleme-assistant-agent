@@ -25,7 +25,7 @@ import java.util.List;
  * 负责从学习上下文中提取学习记录
  *
  * @param <T> 学习记录类型
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public interface LearningExtractor<T> {

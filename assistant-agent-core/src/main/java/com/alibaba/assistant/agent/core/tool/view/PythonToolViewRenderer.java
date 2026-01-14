@@ -34,7 +34,7 @@ import java.util.Map;
  *
  * <p>采用 Google style docstring 格式。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class PythonToolViewRenderer implements ToolViewRenderer {

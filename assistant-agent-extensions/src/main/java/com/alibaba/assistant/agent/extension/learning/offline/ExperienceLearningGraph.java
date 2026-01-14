@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
  * 经验学习图
  * 专门用于从历史数据中学习经验的离线学习图
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class ExperienceLearningGraph extends OfflineLearningGraph {

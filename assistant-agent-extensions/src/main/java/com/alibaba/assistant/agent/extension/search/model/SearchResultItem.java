@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.extension.search.model;
 /**
  * 单条搜索结果
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class SearchResultItem {
 	/**

@@ -20,7 +20,7 @@ package com.alibaba.assistant.agent.extension.trigger.model;
  * 调度模式枚举
  * 定义触发器支持的各种调度方式
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public enum ScheduleMode {

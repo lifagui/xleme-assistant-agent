@@ -38,7 +38,7 @@ import java.util.List;
  *
  * <p>从 OpenAPI 3.1 文档解析指定的 endpoints，生成 CodeactTool。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class HttpDynamicToolFactory implements DynamicCodeactToolFactory {

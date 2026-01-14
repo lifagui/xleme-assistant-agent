@@ -26,7 +26,7 @@ import org.springframework.ai.chat.model.ToolContext;
  *
  * <p>提供给 GraalVM 中的 Python 代码调用的工具代理，负责查找和执行 CodeactTool。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class CodeactToolProxy {

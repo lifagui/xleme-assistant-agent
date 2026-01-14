@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * CodeactToolDefinition 的默认实现。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class DefaultCodeactToolDefinition implements CodeactToolDefinition {

@@ -52,7 +52,7 @@ import java.util.Map;
  * <p>唯一区别：使用Map&lt;String, BaseAgent&gt;而不是Map&lt;String, ReactAgent&gt;
  * <p>暴露write_code和write_condition_code两个工具，内部委托给TaskTool
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class CodeactSubAgentInterceptor extends ModelInterceptor {

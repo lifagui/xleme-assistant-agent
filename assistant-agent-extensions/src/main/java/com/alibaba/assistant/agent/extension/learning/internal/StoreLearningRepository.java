@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
  * 提供持久化的学习记录存储
  *
  * @param <T> 学习记录类型
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class StoreLearningRepository<T> implements LearningRepository<T> {

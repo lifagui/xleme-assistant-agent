@@ -22,7 +22,7 @@ import java.util.Map;
  * Overall result of an evaluation execution
  * Aggregates results from all criteria
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class EvaluationResult {
 

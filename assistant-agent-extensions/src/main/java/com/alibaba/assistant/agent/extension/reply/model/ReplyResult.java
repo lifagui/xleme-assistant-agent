@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * 回复执行结果
  *
- * @author canfeng
+ * @author Assistant Agent Team
  */
 public class ReplyResult {
 

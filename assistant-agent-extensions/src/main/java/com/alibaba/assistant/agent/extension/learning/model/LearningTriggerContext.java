@@ -22,7 +22,7 @@ import java.time.Instant;
  * 学习触发上下文
  * 包含触发学习时的上下文信息
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class LearningTriggerContext {

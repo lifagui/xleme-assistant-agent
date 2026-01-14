@@ -18,7 +18,7 @@ package com.alibaba.assistant.agent.common.tools.definition;
 /**
  * 未知类型节点 - 表示无法确定的类型。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class UnknownShapeNode extends ShapeNode {

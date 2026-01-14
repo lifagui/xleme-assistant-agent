@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * 经验查询条件
  *
- * @author GitHub Copilot
+ * @author Assistant Agent Team
  */
 public class ExperienceQuery {
 

@@ -38,7 +38,7 @@ import java.util.Map;
 /**
  * 取消订阅触发器 CodeactTool 实现 - 删除已有的触发器。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class UnsubscribeTriggerCodeactTool implements TriggerCodeactTool {

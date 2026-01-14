@@ -28,7 +28,7 @@ import java.util.Map;
  * - "context.input.testCases"
  * - "dependencies.collect_tools.value"
  *
- * @author xueqingchen
+ * @author Assistant Agent Team
  */
 public class SourcePathResolver {
 

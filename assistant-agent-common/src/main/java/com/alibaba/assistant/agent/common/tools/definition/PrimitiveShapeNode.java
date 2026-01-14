@@ -20,7 +20,7 @@ import java.util.Objects;
 /**
  * 原始类型节点 - 表示基本数据类型。
  *
- * @author Spring AI Alibaba
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
 public class PrimitiveShapeNode extends ShapeNode {
