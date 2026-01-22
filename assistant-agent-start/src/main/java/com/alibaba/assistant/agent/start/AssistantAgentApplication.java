@@ -66,11 +66,10 @@ public class AssistantAgentApplication {
         return event -> {
             String port = environment.getProperty("server.port", "8080");
             String contextPath = environment.getProperty("server.servlet.context-path", "");
-            String accessUrl = "http://localhost:" + port + contextPath + "/chatui/index.html";
+            String apiUrl = "http://localhost:" + port + contextPath + "/stream";
             System.out.println("\n🎉========================================🎉");
-            System.out.println("✅ Assistant Agent (Full Example) is ready!");
-            System.out.println("🚀 Chat with your agent: " + accessUrl);
-            System.out.println("📚 Demo experiences loaded");
+            System.out.println("✅ 小安旬 (笑了么 AI 助手) 已启动!");
+            System.out.println("🚀 API 地址: " + apiUrl);
             System.out.println("🎉========================================🎉\n");
         };
     }
