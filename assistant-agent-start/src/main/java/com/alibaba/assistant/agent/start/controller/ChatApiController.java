@@ -15,6 +15,7 @@
  */
 package com.alibaba.assistant.agent.start.controller;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -35,6 +36,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.assistant.agent.common.context.LoginContext;
+import com.alibaba.assistant.agent.extension.conversation.model.Conversation;
+import com.alibaba.assistant.agent.extension.conversation.model.Message.ContentType;
+import com.alibaba.assistant.agent.extension.conversation.model.Message.MessageRole;
+import com.alibaba.assistant.agent.extension.conversation.service.AsyncMessagePersistenceService;
+import com.alibaba.assistant.agent.extension.conversation.service.ConversationService;
 import com.alibaba.cloud.ai.graph.CompiledGraph;
 import com.alibaba.cloud.ai.graph.OverAllState;
 import com.alibaba.cloud.ai.graph.RunnableConfig;
@@ -69,11 +76,23 @@ public class ChatApiController {
     private final ReactAgent agent;
     
     // 会话管理：sessionId -> threadId（用于多轮对话上下文保持）
+    // 注意：这是内存缓存，用于快速查找；持久化数据在数据库中
     private final Map<String, String> sessionThreadMap = new ConcurrentHashMap<>();
+    
+    // 会话管理：sessionId -> conversationId（用于消息持久化）
+    private final Map<String, String> sessionConversationMap = new ConcurrentHashMap<>();
 
-    public ChatApiController(ReactAgent agent) {
+    private final ConversationService conversationService;
+    private final AsyncMessagePersistenceService messagePersistenceService;
+
+    public ChatApiController(ReactAgent agent,
+                            ConversationService conversationService,
+                            AsyncMessagePersistenceService messagePersistenceService) {
         this.agent = agent;
-        logger.info("ChatApiController 初始化完成");
+        this.conversationService = conversationService;
+        this.messagePersistenceService = messagePersistenceService;
+        logger.info("ChatApiController 初始化完成, 持久化服务: {}", 
+                conversationService != null ? "已启用" : "未启用");
     }
 
     // ==================== Request/Response DTOs ====================
@@ -126,7 +145,25 @@ public class ChatApiController {
         String threadId = UUID.randomUUID().toString();
         sessionThreadMap.put(sessionId, threadId);
         
-        logger.info("创建新会话: sessionId={}, threadId={}", sessionId, threadId);
+        // 持久化会话到数据库
+        if (conversationService != null) {
+            try {
+                String userId = LoginContext.getUserId();
+                Conversation conversation = conversationService.createConversation(
+                        userId != null ? userId : "anonymous",
+                        threadId,
+                        null  // 标题可以后续更新
+                );
+                sessionConversationMap.put(sessionId, conversation.getId());
+                logger.info("创建新会话: sessionId={}, threadId={}, conversationId={}", 
+                        sessionId, threadId, conversation.getId());
+            } catch (Exception e) {
+                logger.warn("持久化会话失败，继续使用内存会话: sessionId={}", sessionId, e);
+            }
+        } else {
+            logger.info("创建新会话（内存模式）: sessionId={}, threadId={}", sessionId, threadId);
+        }
+        
         return ResponseEntity.ok(new SessionResponse(sessionId, true));
     }
 
@@ -178,9 +215,18 @@ public class ChatApiController {
                 sessionThreadMap.put(sessionId, UUID.randomUUID().toString());
             }
             String threadId = sessionThreadMap.computeIfAbsent(sessionId, k -> UUID.randomUUID().toString());
+            
+            // 确保会话已持久化
+            String conversationId = ensureConversationPersisted(sessionId, threadId);
+
+            // 异步保存用户消息
+            saveMessageAsync(conversationId, MessageRole.USER, request.message());
 
             // 调用 Agent
             String reply = invokeAgent(request.message(), threadId);
+
+            // 异步保存助手回复
+            saveMessageAsync(conversationId, MessageRole.ASSISTANT, reply);
 
             logger.info("聊天响应: sessionId={}, replyLength={}", sessionId, reply.length());
             return ResponseEntity.ok(ChatResponse.success(reply, sessionId, null));
@@ -221,20 +267,40 @@ public class ChatApiController {
             }
             String threadId = sessionThreadMap.computeIfAbsent(sessionId, k -> UUID.randomUUID().toString());
             final String finalSessionId = sessionId;
+            
+            // 确保会话已持久化
+            String conversationId = ensureConversationPersisted(sessionId, threadId);
+            final String finalConversationId = conversationId;
 
             // 处理特殊指令：[greeting] 转换为招呼语生成请求
             String message = request.message();
+            String originalMessage = message;  // 保存原始消息用于持久化
             if ("[greeting]".equals(message)) {
                 message = "你好呀，我是用户，刚打开app想和你聊聊天。请用小安旬的语气给我一句简短的招呼语吧，温暖亲切带点俏皮，2-3句话就好，直接说招呼语内容。";
             }
+            
+            // 异步保存用户消息
+            saveMessageAsync(finalConversationId, MessageRole.USER, originalMessage);
+            
+            // 用于收集完整的助手回复
+            StringBuilder fullReply = new StringBuilder();
 
             // 流式调用 Agent
             return invokeAgentStream(message, threadId)
-                    .doOnNext(content -> logger.info("流式内容准备发送: content={}", content))
+                    .doOnNext(content -> {
+                        logger.debug("流式内容准备发送: content={}", content);
+                        fullReply.append(content);
+                    })
                     .map(content -> formatSSE("content", content, null))
-                    .doOnNext(sse -> logger.info("SSE格式化完成: {}", sse.replace("\n", "\\n")))
+                    .doOnNext(sse -> logger.debug("SSE格式化完成: {}", sse.replace("\n", "\\n")))
                     .concatWith(Flux.just(formatSSE("done", null, finalSessionId)))
-                    .doOnComplete(() -> logger.info("流式响应完成"))
+                    .doOnComplete(() -> {
+                        logger.info("流式响应完成");
+                        // 异步保存完整的助手回复
+                        if (fullReply.length() > 0) {
+                            saveMessageAsync(finalConversationId, MessageRole.ASSISTANT, fullReply.toString());
+                        }
+                    })
                     .onErrorResume(e -> {
                         logger.error("流式聊天处理失败", e);
                         return Flux.just(formatSSE("error", e.getMessage(), finalSessionId));
@@ -433,5 +499,70 @@ public class ChatApiController {
                 .replace("\n", "\\n")
                 .replace("\r", "\\r")
                 .replace("\t", "\\t");
+    }
+
+    /**
+     * 确保会话已持久化
+     * 
+     * @param sessionId 会话ID
+     * @param threadId 线程ID
+     * @return 会话ID（conversationId），如果持久化服务不可用则返回 null
+     */
+    private String ensureConversationPersisted(String sessionId, String threadId) {
+        if (conversationService == null) {
+            return null;
+        }
+        
+        // 检查是否已有持久化的会话
+        String conversationId = sessionConversationMap.get(sessionId);
+        if (conversationId != null) {
+            return conversationId;
+        }
+        
+        // 创建新的持久化会话
+        try {
+            String userId = LoginContext.getUserId();
+            Conversation conversation = conversationService.createConversation(
+                    userId != null ? userId : "anonymous",
+                    threadId,
+                    null
+            );
+            sessionConversationMap.put(sessionId, conversation.getId());
+            return conversation.getId();
+        } catch (Exception e) {
+            logger.warn("创建持久化会话失败: sessionId={}", sessionId, e);
+            return null;
+        }
+    }
+
+    /**
+     * 异步保存消息
+     * 
+     * @param conversationId 会话ID
+     * @param role 消息角色
+     * @param content 消息内容
+     */
+    private void saveMessageAsync(String conversationId, MessageRole role, String content) {
+        if (messagePersistenceService == null || conversationId == null) {
+            return;
+        }
+        
+        try {
+            String tenantId = LoginContext.getTenantId();
+            com.alibaba.assistant.agent.extension.conversation.model.Message message = 
+                    com.alibaba.assistant.agent.extension.conversation.model.Message.builder()
+                    .id(UUID.randomUUID().toString())
+                    .tenantId(tenantId)
+                    .conversationId(conversationId)
+                    .role(role)
+                    .contentType(ContentType.TEXT)
+                    .content(content)
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            
+            messagePersistenceService.saveMessageAsync(message);
+        } catch (Exception e) {
+            logger.warn("异步保存消息失败: conversationId={}, role={}", conversationId, role, e);
+        }
     }
 }

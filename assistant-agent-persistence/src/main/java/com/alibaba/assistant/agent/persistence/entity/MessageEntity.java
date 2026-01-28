@@ -1,0 +1,92 @@
+/*
+ * Copyright 2024-2025 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.alibaba.assistant.agent.persistence.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.time.LocalDateTime;
+import java.util.Map;
+
+/**
+ * 消息实体
+ *
+ * @author Assistant Agent Team
+ * @since 1.0.0
+ */
+@Data
+@Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "message")
+public class MessageEntity {
+
+    @Id
+    @Column(name = "id", length = 36)
+    private String id;
+
+    /**
+     * 租户ID
+     */
+    @Column(name = "tenant_id", length = 64, nullable = false)
+    private String tenantId;
+
+    /**
+     * 会话ID，逻辑关联 conversation.id
+     */
+    @Column(name = "conversation_id", length = 36, nullable = false)
+    private String conversationId;
+
+    /**
+     * 角色：USER/ASSISTANT/SYSTEM
+     */
+    @Column(name = "role", length = 20, nullable = false)
+    private String role;
+
+    /**
+     * 内容类型：TEXT/JSON
+     */
+    @Column(name = "content_type", length = 20)
+    private String contentType;
+
+    /**
+     * 消息内容
+     */
+    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
+    private String content;
+
+    /**
+     * 元数据，JSONB类型
+     */
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "metadata", columnDefinition = "jsonb")
+    private Map<String, Object> metadata;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+}

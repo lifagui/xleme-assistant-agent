@@ -74,6 +74,9 @@ public class GraalCodeExecutor {
 	// ToolRegistryBridge factory for customization
 	private final ToolRegistryBridgeFactory toolRegistryBridgeFactory;
 
+	// Tool context for tools
+	private final ToolContext toolContext;
+
 	// Security settings
 	private final boolean allowIO;
 	private final boolean allowNativeAccess;
@@ -110,19 +113,6 @@ public class GraalCodeExecutor {
 		this(environmentManager, codeContext, tools, state, codeactToolRegistry, null, allowIO, allowNativeAccess, executionTimeoutMs);
 	}
 
-	/**
-	 * Full constructor that supports a custom ToolRegistryBridgeFactory.
-	 *
-	 * @param environmentManager runtime environment manager
-	 * @param codeContext code context
-	 * @param tools tool callbacks
-	 * @param state overall state
-	 * @param codeactToolRegistry Codeact tool registry
-	 * @param toolRegistryBridgeFactory custom ToolRegistryBridge factory; if null, the default factory is used
-	 * @param allowIO whether to allow IO
-	 * @param allowNativeAccess whether to allow native access
-	 * @param executionTimeoutMs execution timeout in milliseconds
-	 */
 	public GraalCodeExecutor(
 			RuntimeEnvironmentManager environmentManager,
 			CodeContext codeContext,
@@ -133,12 +123,27 @@ public class GraalCodeExecutor {
 			boolean allowIO,
 			boolean allowNativeAccess,
 			long executionTimeoutMs) {
+		this(environmentManager, codeContext, tools, state, codeactToolRegistry, toolRegistryBridgeFactory, allowIO, allowNativeAccess, executionTimeoutMs, null);
+	}
+
+	public GraalCodeExecutor(
+			RuntimeEnvironmentManager environmentManager,
+			CodeContext codeContext,
+			List<ToolCallback> tools,
+			OverAllState state,
+			CodeactToolRegistry codeactToolRegistry,
+			ToolRegistryBridgeFactory toolRegistryBridgeFactory,
+			boolean allowIO,
+			boolean allowNativeAccess,
+			long executionTimeoutMs,
+			ToolContext toolContext) {
 		this.environmentManager = environmentManager;
 		this.codeContext = codeContext;
 		this.codeactToolRegistry = codeactToolRegistry;
 		this.toolRegistryBridgeFactory = toolRegistryBridgeFactory != null
 				? toolRegistryBridgeFactory
 				: DefaultToolRegistryBridgeFactory.INSTANCE;
+		this.toolContext = toolContext != null ? toolContext : new ToolContext(Map.of());
 		this.allowIO = allowIO;
 		this.allowNativeAccess = allowNativeAccess;
 		this.executionTimeoutMs = executionTimeoutMs;
@@ -603,11 +608,8 @@ public class GraalCodeExecutor {
 
 		logger.info("GraalCodeExecutor#injectCodeactTools - reason=开始注入CodeactTool到Python环境");
 
-		// Create tool context for all tools
-		ToolContext toolContext = new ToolContext(Map.of());
-
 		// Create and inject ToolRegistryBridge using factory
-		ToolRegistryBridge bridge = toolRegistryBridgeFactory.create(registry, toolContext);
+		ToolRegistryBridge bridge = toolRegistryBridgeFactory.create(registry, this.toolContext);
 		context.getBindings("python").putMember("__tool_registry__", bridge);
 		logger.debug("GraalCodeExecutor#injectCodeactTools - reason=ToolRegistryBridge注入完成, bridgeClass={}",
 				bridge.getClass().getSimpleName());

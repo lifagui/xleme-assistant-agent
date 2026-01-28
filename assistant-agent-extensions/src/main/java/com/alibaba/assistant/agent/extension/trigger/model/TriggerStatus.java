@@ -47,7 +47,12 @@ public enum TriggerStatus {
 	/**
 	 * 已过期状态（自然过期）
 	 */
-	EXPIRED
+	EXPIRED,
+
+	/**
+	 * 已完成状态（一次性执行完成）
+	 */
+	FINISHED
 
 }
 

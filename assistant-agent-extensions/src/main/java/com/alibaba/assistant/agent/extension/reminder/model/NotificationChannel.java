@@ -13,29 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package com.alibaba.assistant.agent.extension.trigger.executor;
-
-import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
-import com.alibaba.assistant.agent.extension.trigger.model.TriggerExecutionResult;
+package com.alibaba.assistant.agent.extension.reminder.model;
 
 /**
- * 触发器执行回调接口
- * 用于解耦调度后端和执行逻辑
+ * 通知渠道枚举
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
-@FunctionalInterface
-public interface TriggerExecutionCallback {
+public enum NotificationChannel {
 
-	/**
-	 * 执行触发器
-	 * @param executionId 执行记录ID
-	 * @param definition 触发器定义
-	 * @return 执行结果
-	 */
-	TriggerExecutionResult execute(String executionId, TriggerDefinition definition);
+    /**
+     * 短信通知
+     */
+    SMS("短信"),
 
+    /**
+     * 站内信/APP推送
+     */
+    IN_APP("站内信");
+
+    private final String description;
+
+    NotificationChannel(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
 }
-

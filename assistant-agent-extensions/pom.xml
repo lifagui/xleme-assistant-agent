@@ -85,6 +85,13 @@
             <version>2.0.3.RELEASE</version>
         </dependency>
 
+        <!-- Persistence Module - 数据持久化层 -->
+        <dependency>
+            <groupId>com.alibaba.agent.assistant</groupId>
+            <artifactId>assistant-agent-persistence</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
         <!-- Test Dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

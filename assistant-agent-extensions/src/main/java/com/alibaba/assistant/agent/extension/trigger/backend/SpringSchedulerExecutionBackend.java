@@ -16,6 +16,18 @@
 
 package com.alibaba.assistant.agent.extension.trigger.backend;
 
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.support.CronTrigger;
+
 import com.alibaba.assistant.agent.extension.trigger.executor.TriggerExecutionCallback;
 import com.alibaba.assistant.agent.extension.trigger.model.ExecutionStatus;
 import com.alibaba.assistant.agent.extension.trigger.model.ScheduleMode;
@@ -23,17 +35,6 @@ import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
 import com.alibaba.assistant.agent.extension.trigger.model.TriggerExecutionRecord;
 import com.alibaba.assistant.agent.extension.trigger.model.TriggerExecutionResult;
 import com.alibaba.assistant.agent.extension.trigger.repository.TriggerExecutionLogRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.TaskScheduler;
-import org.springframework.scheduling.support.CronTrigger;
-
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
 
 /**
  * 基于Spring TaskScheduler的执行后端实现
@@ -157,7 +158,7 @@ public class SpringSchedulerExecutionBackend implements ExecutionBackend {
 				log.info("SpringSchedulerExecutionBackend executeTask 使用回调执行触发器, triggerId={}",
 						definition.getTriggerId());
 
-				TriggerExecutionResult result = executionCallback.execute(definition);
+				TriggerExecutionResult result = executionCallback.execute(executionId, definition);
 
 				// 根据执行结果更新记录
 				if (result.getExecutionSuccess() != null && result.getExecutionSuccess()) {

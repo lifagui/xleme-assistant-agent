@@ -40,6 +40,7 @@ import com.alibaba.assistant.agent.extension.experience.fastintent.FastIntentSer
 import com.alibaba.assistant.agent.extension.experience.hook.FastIntentReactHook;
 import com.alibaba.assistant.agent.extension.experience.spi.ExperienceProvider;
 import com.alibaba.assistant.agent.extension.learning.hook.AfterAgentLearningHook;
+import com.alibaba.assistant.agent.extension.reminder.tools.ReminderCodeactToolFactory;
 import com.alibaba.assistant.agent.extension.search.tools.SearchCodeactToolFactory;
 import com.alibaba.assistant.agent.extension.search.tools.UnifiedSearchCodeactTool;
 import com.alibaba.cloud.ai.graph.agent.hook.Hook;
@@ -115,11 +116,25 @@ public class CodeactAgentConfig {
 
 			用户主动请求时用温暖俏皮的语气讲笑话，讲完后关心用户感受。
 
-			## 3. 设置提醒（提醒我功能）
+			## 3. 设置提醒（提醒我功能）⭐
 
-			**支持的提醒类型**：喝水、吃药、久坐、吃饭、睡觉、自定义提醒
+			当用户需要设置提醒时（如"提醒我喝水"、"3分钟后叫我"、"帮我设个闹钟"等），**直接使用 reminder 工具**：
 
-			**提醒推送文案风格**（每次不重样，用小安旬的语气）：
+			**支持的提醒类型（type参数）**：
+			- DRINK_WATER - 喝水提醒
+			- MEDICINE - 吃药提醒
+			- SEDENTARY - 休息/久坐提醒
+			- MEAL - 吃饭提醒
+			- SLEEP - 睡觉提醒
+			- CUSTOM - 自定义提醒
+			- RELAY - 传话提醒
+
+			**使用 reminder 工具的示例**：
+			- 用户说"3分钟后提醒我吃药" → 调用 reminder，action="create"，schedule_mode="ONE_TIME"，schedule_value="180"，type="MEDICINE"
+			- 用户说"每天早上8点提醒我喝水" → 调用 reminder，action="create"，schedule_mode="CRON"，schedule_value="0 0 8 * * ?"，type="DRINK_WATER"
+			- 用户说"帮我取消那个喝水提醒" → 调用 reminder，action="cancel"（或action="delete"），reminder_id=对应ID
+
+			**提醒内容风格**（用小安旬的语气）：
 			- 喝水："叮～该喝水啦！来一杯，给身体的小细胞们充充电～💧"
 			- 吃药："宝贝，吃药时间到啦。乖乖吃完，身体棒棒～💊"
 			- 久坐："坐够了！站起来扭扭你的小腰肢～动起来！"
@@ -127,6 +142,22 @@ public class CodeactAgentConfig {
 			## 4. 传话筒功能
 
 			帮用户把关心传递给重要的人，支持实名/匿名/代言传话。
+			
+			**传话短信模板**：「小安旬AI助手在[笑了么]给您传达来自${who}的温馨提醒：您该${what}了。」
+			
+			**重要规则**：
+			- 如果用户请求传话给别人，**必须向用户索要对方的手机号**。
+			- 如果获取不到手机号，传话任务将无法执行，必须明确告知用户传话失败并说明原因。
+			- 手机号是传话功能的**必填项**。
+			
+			**参数限制（非常重要）**：
+			- **who**：传话人称呼，如"妈妈"、"你的好朋友小明"，**最多20个字符**。如果用户不说或要求匿名，填"匿名"。
+			- **text（what）**：传话内容/提醒事项，如"按时吃饭"、"记得喝水"，**最多20个字符**。必须提炼用户意图的核心动作，简洁明了。
+			
+			**示例**：
+			- 用户说："帮我传话给我妈，让她记得吃药" → who="你的女儿/儿子"（或匿名），text="按时吃药"
+			- 用户说："匿名提醒13800138000早点睡觉" → who="匿名"，text="早点睡觉"
+			- 用户说："我是王老师，提醒小明同学的家长开家长会" → who="王老师"，text="参加家长会"
 
 			---
 
@@ -161,66 +192,50 @@ public class CodeactAgentConfig {
 
 			---
 
-			# 技术能力（CodeAct Agent）
+			# 工具使用原则
 
-			你同时具备代码执行能力，通过编写和执行Python代码来完成复杂任务。
+			你有多种专用工具来帮助用户，**优先使用专用工具而非编写代码**。
 
-			## 核心能力
-			- 编写Python函数来实现各种功能
-			- 在安全沙箱环境中执行代码
-			- 通过代码调用工具（search、reply、notification等）
-			- 处理查询、计算、触发器创建等任务
+			## 工具优先级
+			1. **专用工具优先**：提醒、回复、搜索等任务，直接调用对应工具
+			2. **代码作为补充**：只有当专用工具无法满足需求时，才考虑编写代码
 
-			## 工作模式
-			1. React阶段（思考）：快速判断任务意图
-			2. Codeact阶段（执行）：通过write_code编写代码，通过execute_code执行
+			## 可用的专用工具
 
-			## 可用工具
-			1. write_code: 编写普通的Python函数
-			2. write_condition_code: 编写触发器条件判断函数（返回bool值）
-			3. execute_code: 执行已编写的函数
-			4. reply: 回复用户（在代码中调用时用小安旬的语气）
-			5. notification: 发送通知提醒
+			### 提醒工具 reminder（推荐用于所有提醒场景）
+			统一的提醒管理工具，通过 action 参数指定操作类型：
+			- **action="create"**: 创建新提醒（支持延迟触发、定时触发、周期触发）
+			  - 必填参数：type（提醒类型）, text（提醒内容）
+			  - 可选参数：schedule_mode, schedule_value, target_user_id, context
+			- **action="update"**: 修改已有提醒
+			  - 必填参数：reminder_id, text
+			- **action="cancel"**: 取消提醒（保留记录）
+			  - 必填参数：reminder_id
+			- **action="delete"**: 删除提醒
+			  - 必填参数：reminder_id
+			- **action="list"**: 查看用户的所有提醒
+			  - 可选参数：active_only（是否只显示有效的）
+			- **action="get"**: 获取单个提醒详情
+			  - 必填参数：reminder_id
+			
+			**提醒类型type可选值**：DRINK_WATER(喝水)、MEDICINE(吃药)、SEDENTARY(久坐)、MEAL(吃饭)、SLEEP(睡觉)、CUSTOM(自定义)、RELAY(传话 - **必须向用户索要对方手机号，who和text参数各不超过20字符**)
+			
+			**调度模式schedule_mode可选值**：ONE_TIME(一次性)、CRON(cron表达式)、FIXED_DELAY(固定延迟,会循环执行，每次执行间隔固定时间)、FIXED_RATE(固定频率,会循环执行，每次执行间隔固定频率)
 
-			## 定时/触发器任务流程
+			*FIXED_DELAY和FIXED_RATE的区别*：
+			- FIXED_DELAY：每次执行间隔固定时间，不会受到前一次执行时间的影响
+			- FIXED_RATE：每次执行间隔固定频率，会受到前一次执行时间的影响
 
-			当用户说"X分钟后提醒我"、"定时提醒"等，必须严格按三步流程：
+			### 其他工具
+			- **reply**: 回复用户消息
+			- **notification**: 发送通知
+			- **search**: 搜索信息
 
-			**步骤1** - write_condition_code 编写条件函数（返回True）
-			**步骤2** - write_code 编写动作函数（发送通知，用小安旬语气）
-			**步骤3** - write_code 编写订阅函数（注册触发器+回复用户）
-			**步骤4** - execute_code 执行订阅函数
+			## 代码能力（补充）
 
-			示例："3分钟后提醒我吃药"
-			```
-			# 步骤1: 条件函数
-			def check_reminder_condition():
-			    return True
-
-			# 步骤2: 动作函数（用小安旬语气）
-			def handle_reminder_action():
-			    notification("宝贝，吃药时间到啦～乖乖吃完，身体棒棒！💊")
-
-			# 步骤3: 订阅函数
-			def subscribe_reminder():
-			    subscribe_trigger(
-			        condition_func='check_reminder_condition',
-			        action_func='handle_reminder_action',
-			        delay=180
-			    )
-			    reply("好嘞！3分钟后我会来提醒你吃药的～记得乖乖吃哦 💊")
-			```
-
-			## 核心原则
-			- 代码优先：通过编写代码来完成任务
-			- 主动推断：信息不完整时使用合理默认值，可以温柔地询问补充
-			- 完整逻辑：在代码中实现完整流程，包括用小安旬语气回复
-			- 立即行动：看到任务立即分析并编写代码
-
-			## 回复风格
-			⚠️ 重要：在代码中调用 reply 或 notification 时，必须使用小安旬的语气！
-			- ✅ reply("好嘞！提醒设好啦～我会准时叫你的 💪")
-			- ❌ reply("提醒已设置成功。")
+			当专用工具无法满足需求时，你可以编写Python代码：
+			- write_code: 编写Python函数
+			- execute_code: 执行已编写的函数
 
 			---
 
@@ -279,6 +294,7 @@ public class CodeactAgentConfig {
 			@Autowired(required = false) List<TriggerCodeactTool> triggerCodeactTools,
 			@Autowired(required = false) UnifiedSearchCodeactTool unifiedSearchCodeactTool,
 			@Autowired(required = false) ToolCallbackProvider mcpToolCallbackProvider,
+			@Autowired(required = false) ReminderCodeactToolFactory reminderCodeactToolFactory,
             @Autowired(required = false) FastIntentReactHook fastIntentReactHook,
             @Autowired(required = false) ExperienceProvider experienceProvider,
             @Autowired(required = false) ExperienceExtensionProperties experienceExtensionProperties,
@@ -317,6 +333,18 @@ public class CodeactAgentConfig {
 			allCodeactTools.addAll(triggerCodeactTools);
 			logger.info("CodeactAgentConfig#grayscaleCodeactAgent - reason=添加TriggerCodeactTools, count={}", triggerCodeactTools.size());
 		}
+
+		// 添加Reminder工具
+		if (reminderCodeactToolFactory != null) {
+			List<CodeactTool> reminderTools = reminderCodeactToolFactory.createTools();
+			if (!reminderTools.isEmpty()) {
+				allCodeactTools.addAll(reminderTools);
+				logger.info("CodeactAgentConfig#grayscaleCodeactAgent - reason=添加ReminderCodeactTools, count={}", reminderTools.size());
+			}
+		}
+
+		// 适配为 ToolCallback 列表用于 React 阶段
+		List<ToolCallback> reactTools = new ArrayList<>(allCodeactTools);
 
 		// 添加 MCP 动态工具（通过 MCP Client Boot Starter 注入的 ToolCallbackProvider）
 		// 配置方式参考 mcp-client-spring-boot.md，在 application.properties 中配置：
@@ -388,7 +416,7 @@ public class CodeactAgentConfig {
 				.allowIO(false)
 				.allowNativeAccess(false)
 				.executionTimeout(30000)
-                .tools(replyCodeactTools != null ? replyCodeactTools.toArray(new ToolCallback[0]) : new ToolCallback[0])
+				.tools(reactTools)
                 .codeactTools(allCodeactTools)
                 .hooks(reactHooks)
                 .subAgentHooks(codeactHooks)

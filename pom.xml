@@ -12,6 +12,7 @@
         <module>assistant-agent-common</module>
         <module>assistant-agent-core</module>
         <module>assistant-agent-extensions</module>
+        <module>assistant-agent-persistence</module>
         <module>assistant-agent-prompt-builder</module>
         <module>assistant-agent-evaluation</module>
         <module>assistant-agent-start</module>
@@ -74,6 +75,12 @@
             <dependency>
                 <groupId>com.alibaba.agent.assistant</groupId>
                 <artifactId>assistant-agent-autoconfigure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.agent.assistant</groupId>
+                <artifactId>assistant-agent-persistence</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

@@ -16,6 +16,18 @@
 
 package com.alibaba.assistant.agent.extension.trigger.executor;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ai.chat.model.ToolContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import com.alibaba.assistant.agent.common.enums.Language;
 import com.alibaba.assistant.agent.common.tools.CodeactTool;
 import com.alibaba.assistant.agent.core.context.CodeContext;
@@ -30,13 +42,6 @@ import com.alibaba.assistant.agent.extension.trigger.model.SessionSnapshot;
 import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
 import com.alibaba.assistant.agent.extension.trigger.model.TriggerExecutionResult;
 import com.alibaba.assistant.agent.extension.trigger.repository.SessionSnapshotRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 触发器执行器
@@ -55,7 +60,7 @@ import java.util.Map;
  * @author canfeng
  * @since 1.0.0
  */
-public class TriggerExecutor implements TriggerExecutionCallback {
+public class TriggerExecutor implements TriggerExecutionCallback, ApplicationContextAware {
 
 	private static final Logger log = LoggerFactory.getLogger(TriggerExecutor.class);
 
@@ -68,6 +73,10 @@ public class TriggerExecutor implements TriggerExecutionCallback {
 	private final boolean allowNativeAccess;
 
 	private final long executionTimeoutMs;
+
+	private ApplicationContext applicationContext;
+
+	private List<CodeactTool> globalCodeactTools = null;
 
 	public TriggerExecutor(SessionSnapshotRepository snapshotRepository) {
 		this(snapshotRepository, false, false, 30000);
@@ -89,9 +98,9 @@ public class TriggerExecutor implements TriggerExecutionCallback {
 	 * @return 执行结果
 	 */
 	@Override
-	public TriggerExecutionResult execute(TriggerDefinition definition) {
+	public TriggerExecutionResult execute(String executionId, TriggerDefinition definition) {
 		String triggerId = definition.getTriggerId();
-		log.info("TriggerExecutor execute 开始执行触发器, triggerId={}", triggerId);
+		log.info("TriggerExecutor execute 开始执行触发器, triggerId={}, executionId={}", triggerId, executionId);
 
 		long startTime = System.currentTimeMillis();
 		TriggerExecutionResult result = new TriggerExecutionResult();
@@ -108,15 +117,21 @@ public class TriggerExecutor implements TriggerExecutionCallback {
 			CodeactToolRegistry toolRegistry = buildToolRegistry(snapshot);
 
 			// 3. 创建GraalCodeExecutor（复用框架能力）
+			// 创建包含执行上下文的 ToolContext
+			ToolContext toolContext = 
+					new org.springframework.ai.chat.model.ToolContext(Map.of("trigger_execution_id", executionId));
+
 			GraalCodeExecutor executor = new GraalCodeExecutor(
 					environmentManager,
 					codeContext,
 					Collections.emptyList(),  // ToolCallback列表
 					null,  // OverAllState
 					toolRegistry,
+					null, // custom factory
 					allowIO,
 					allowNativeAccess,
-					executionTimeoutMs
+					executionTimeoutMs,
+					toolContext // 需要在 GraalCodeExecutor 中增加此参数
 			);
 
 			// 4. 执行条件函数（如果有）
@@ -234,6 +249,15 @@ public class TriggerExecutor implements TriggerExecutionCallback {
 		return registry;
 	}
 
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
+
+	public void setGlobalCodeactTools(List<CodeactTool> tools) {
+		this.globalCodeactTools = tools;
+	}
+
 	/**
 	 * 获取可用的CodeactTool列表
 	 * 
@@ -243,8 +267,29 @@ public class TriggerExecutor implements TriggerExecutionCallback {
 	 * @return 可用工具列表
 	 */
 	protected List<CodeactTool> getAvailableTools(SessionSnapshot snapshot) {
-		// 默认返回空列表，子类可覆盖提供具体工具
-		return Collections.emptyList();
+		if (globalCodeactTools == null) {
+			synchronized (this) {
+				if (globalCodeactTools == null) {
+					globalCodeactTools = new ArrayList<>();
+					if (applicationContext != null) {
+						// 1. 获取单个 CodeactTool 类型的 Bean
+						Map<String, CodeactTool> singleBeans = applicationContext.getBeansOfType(CodeactTool.class);
+						globalCodeactTools.addAll(singleBeans.values());
+						
+						// 2. 获取 List<CodeactTool> 类型的 Bean (有些模块是批量注册的)
+						Map<String, List> listBeans = applicationContext.getBeansOfType(List.class);
+						for (List list : listBeans.values()) {
+							if (!list.isEmpty() && list.get(0) instanceof CodeactTool) {
+								globalCodeactTools.addAll((List<CodeactTool>) list);
+							}
+						}
+						
+						log.info("TriggerExecutor 动态发现全局工具, count={}", globalCodeactTools.size());
+					}
+				}
+			}
+		}
+		return globalCodeactTools;
 	}
 
 	/**

@@ -6,10 +6,43 @@
 
 spring:
   application:
-    name: assistant-agent-full
+    name: anxun-assistant-agent
+
+  # ==========================================================================
+  # PostgreSQL Database Configuration
+  # ==========================================================================
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:assistant}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      connection-timeout: 20000
+      max-lifetime: 1200000
+
+  # ==========================================================================
+  # JPA / Hibernate Configuration
+  # ==========================================================================
+  jpa:
+    hibernate:
+      ddl-auto: validate  # 生产环境使用 validate，由 SQL 脚本管理表结构
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          batch_size: 50
+        order_inserts: true
+        order_updates: true
 
 server:
   port: 8080
+  address: 0.0.0.0
 
 # ============================================================================
 # DashScope Configuration
@@ -24,7 +57,7 @@ spring.ai.dashscope:
 # Experience Module - with FastIntent enabled
 # ============================================================================
 spring.ai.alibaba.codeact.extension.experience:
-  enabled: true
+  enabled: false
   fast-intent-enabled: true
   fast-intent-react-enabled: true
   fast-intent-code-enabled: true
@@ -41,7 +74,7 @@ spring.ai.alibaba.codeact.extension.experience:
 # Learning Module - with after-agent learning
 # ============================================================================
 spring.ai.alibaba.codeact.extension.learning:
-  enabled: true
+  enabled: false
   online:
     enabled: true
     after-agent:
@@ -50,10 +83,22 @@ spring.ai.alibaba.codeact.extension.learning:
         - experience
 
 # ============================================================================
+# Search Module
+# Default: enabled with project and knowledge search
+# ============================================================================
+spring.ai.alibaba.codeact.extension.search:
+  enabled: false
+  project-search-enabled: true
+  knowledge-search-enabled: true
+  web-search-enabled: false           # Requires API key
+  default-top-k: 10
+  search-timeout-ms: 5000
+
+# ============================================================================
 # Reply Module - with custom tools
 # ============================================================================
 spring.ai.alibaba.codeact.extension.reply:
-  enabled: true
+  enabled: false
   tools:
     - toolName: send_success_message
       channelCode: IDE_TEXT
@@ -90,7 +135,7 @@ spring.ai.alibaba.codeact.extension.reply:
 # Evaluation Module - with input routing
 # ============================================================================
 spring.ai.alibaba.codeact.extension.evaluation:
-  enabled: true
+  enabled: false
   input-routing:
     enabled: true
     suite-id: input_routing_suite
@@ -99,8 +144,27 @@ spring.ai.alibaba.codeact.extension.evaluation:
     suite-id: code_generation_input_suite
 
 # ============================================================================
+# Assistant Agent Reminder - Internal API Configuration
+# ============================================================================
+assistant:
+  reminder:
+    enabled: true
+    internal-api:
+      base-url: ${INTERNAL_API_BASE_URL:http://localhost:8088}
+      user-check-path: /internal/user/check
+      sms-send-path: /internal/sms/send
+      token: ${INTERNAL_API_TOKEN:internal_secret_token_123}
+  persistence:
+    async:
+      core-pool-size: 2
+      max-pool-size: 10
+      queue-capacity: 1000
+
+# ============================================================================
 # Logging - Debug level for development
 # ============================================================================
 logging:
   level:
     com.alibaba.assistant.agent: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE

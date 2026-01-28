@@ -32,6 +32,11 @@
             <artifactId>assistant-agent-autoconfigure</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba.agent.assistant</groupId>
+            <artifactId>assistant-agent-extensions</artifactId>
+        </dependency>
+
         <!-- Spring Boot Web -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,6 +53,12 @@
             <groupId>org.graalvm.polyglot</groupId>
             <artifactId>python-community</artifactId>
             <type>pom</type>
+        </dependency>
+
+        <!-- Persistence Module - 数据持久化层 -->
+        <dependency>
+            <groupId>com.alibaba.agent.assistant</groupId>
+            <artifactId>assistant-agent-persistence</artifactId>
         </dependency>
     </dependencies>
 

@@ -17,6 +17,7 @@
 package com.alibaba.assistant.agent.extension.trigger.config;
 
 import com.alibaba.assistant.agent.common.tools.TriggerCodeactTool;
+import com.alibaba.assistant.agent.common.tools.CodeactTool;
 import com.alibaba.assistant.agent.extension.trigger.backend.ExecutionBackend;
 import com.alibaba.assistant.agent.extension.trigger.backend.SpringSchedulerExecutionBackend;
 import com.alibaba.assistant.agent.extension.trigger.executor.TriggerExecutor;
@@ -24,17 +25,24 @@ import com.alibaba.assistant.agent.extension.trigger.manager.TriggerManager;
 import com.alibaba.assistant.agent.extension.trigger.repository.InMemorySessionSnapshotRepository;
 import com.alibaba.assistant.agent.extension.trigger.repository.InMemoryTriggerExecutionLogRepository;
 import com.alibaba.assistant.agent.extension.trigger.repository.InMemoryTriggerRepository;
+import com.alibaba.assistant.agent.extension.trigger.repository.JpaTriggerExecutionLogRepository;
+import com.alibaba.assistant.agent.extension.trigger.repository.JpaTriggerRepository;
 import com.alibaba.assistant.agent.extension.trigger.repository.SessionSnapshotRepository;
 import com.alibaba.assistant.agent.extension.trigger.repository.TriggerExecutionLogRepository;
 import com.alibaba.assistant.agent.extension.trigger.repository.TriggerRepository;
 import com.alibaba.assistant.agent.extension.trigger.tools.TriggerCodeactToolFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.alibaba.assistant.agent.persistence.repository.TriggerDefinitionJpaRepository;
+import com.alibaba.assistant.agent.persistence.repository.TriggerExecutionRecordJpaRepository;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import com.alibaba.assistant.agent.persistence.config.JpaConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
@@ -46,7 +54,8 @@ import java.util.List;
  * @author Assistant Agent Team
  * @since 1.0.0
  */
-@Configuration
+@AutoConfiguration
+@AutoConfigureAfter(JpaConfig.class)
 @ConditionalOnProperty(prefix = "spring.ai.alibaba.codeact.extension.trigger", name = "enabled",
 		havingValue = "true", matchIfMissing = true)
 @EnableConfigurationProperties(TriggerProperties.class)
@@ -54,16 +63,29 @@ public class TriggerAutoConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(TriggerAutoConfiguration.class);
 
+	/**
+	 * 触发器仓库（优先使用 JPA 实现，否则回退到内存实现）
+	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public TriggerRepository triggerRepository() {
+	public TriggerRepository triggerRepository(ObjectProvider<TriggerDefinitionJpaRepository> jpaRepositoryProvider) {
+		TriggerDefinitionJpaRepository jpaRepository = jpaRepositoryProvider.getIfAvailable();
+		if (jpaRepository != null) {
+			log.info("TriggerAutoConfiguration triggerRepository 创建JpaTriggerRepository");
+			return new JpaTriggerRepository(jpaRepository);
+		}
 		log.info("TriggerAutoConfiguration triggerRepository 创建默认InMemoryTriggerRepository");
 		return new InMemoryTriggerRepository();
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public TriggerExecutionLogRepository triggerExecutionLogRepository() {
+	public TriggerExecutionLogRepository triggerExecutionLogRepository(ObjectProvider<TriggerExecutionRecordJpaRepository> jpaRepositoryProvider) {
+		TriggerExecutionRecordJpaRepository jpaRepository = jpaRepositoryProvider.getIfAvailable();
+		if (jpaRepository != null) {
+			log.info("TriggerAutoConfiguration triggerExecutionLogRepository 创建JpaTriggerExecutionLogRepository");
+			return new JpaTriggerExecutionLogRepository(jpaRepository);
+		}
 		log.info("TriggerAutoConfiguration triggerExecutionLogRepository 创建默认InMemoryTriggerExecutionLogRepository");
 		return new InMemoryTriggerExecutionLogRepository();
 	}

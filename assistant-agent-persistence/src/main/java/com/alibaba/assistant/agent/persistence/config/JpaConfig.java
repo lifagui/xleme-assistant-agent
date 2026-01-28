@@ -13,29 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.alibaba.assistant.agent.persistence.config;
 
-package com.alibaba.assistant.agent.extension.trigger.executor;
-
-import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
-import com.alibaba.assistant.agent.extension.trigger.model.TriggerExecutionResult;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 /**
- * 触发器执行回调接口
- * 用于解耦调度后端和执行逻辑
+ * JPA 自动配置类
  *
- * @author canfeng
+ * @author Assistant Agent Team
  * @since 1.0.0
  */
-@FunctionalInterface
-public interface TriggerExecutionCallback {
-
-	/**
-	 * 执行触发器
-	 * @param executionId 执行记录ID
-	 * @param definition 触发器定义
-	 * @return 执行结果
-	 */
-	TriggerExecutionResult execute(String executionId, TriggerDefinition definition);
-
+@AutoConfiguration
+@EntityScan(basePackages = "com.alibaba.assistant.agent.persistence.entity")
+@EnableJpaRepositories(basePackages = "com.alibaba.assistant.agent.persistence.repository")
+public class JpaConfig {
+    // JPA 自动配置
 }
-

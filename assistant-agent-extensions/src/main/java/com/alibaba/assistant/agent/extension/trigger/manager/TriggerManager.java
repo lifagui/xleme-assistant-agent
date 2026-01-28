@@ -16,6 +16,16 @@
 
 package com.alibaba.assistant.agent.extension.trigger.manager;
 
+import java.time.Instant;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.assistant.agent.extension.trigger.backend.ExecutionBackend;
 import com.alibaba.assistant.agent.extension.trigger.model.SourceType;
 import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
@@ -23,15 +33,6 @@ import com.alibaba.assistant.agent.extension.trigger.model.TriggerExecutionRecor
 import com.alibaba.assistant.agent.extension.trigger.model.TriggerStatus;
 import com.alibaba.assistant.agent.extension.trigger.repository.TriggerExecutionLogRepository;
 import com.alibaba.assistant.agent.extension.trigger.repository.TriggerRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.time.Instant;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 触发器管理器
@@ -220,6 +221,16 @@ public class TriggerManager {
 	}
 
 	/**
+	 * 更新触发器状态
+	 * @param triggerId 触发器ID
+	 * @param status 新状态
+	 */
+	public void updateStatus(String triggerId, TriggerStatus status) {
+		log.info("TriggerManager.updateStatus 更新触发器状态: triggerId={}, status={}", triggerId, status);
+		triggerRepository.updateStatus(triggerId, status);
+	}
+
+	/**
 	 * 验证触发器定义的合法性
 	 * @param definition 触发器定义
 	 */
@@ -238,7 +249,7 @@ public class TriggerManager {
 	}
 
 	private String generateTriggerId() {
-		return "trigger_" + UUID.randomUUID().toString().replace("-", "");
+		return "tg" + UUID.randomUUID().toString().replace("-", "");
 	}
 
 }
