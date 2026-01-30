@@ -72,6 +72,14 @@ public interface ReminderJpaRepository extends JpaRepository<ReminderEntity, Str
             String tenantId, String userId, String type);
 
     /**
+     * 根据租户ID，查询用户创建或接收的提醒列表
+     */
+    @Query("SELECT r FROM ReminderEntity r WHERE r.tenantId = :tenantId AND (r.userId = :userId OR r.targetUserId = :userId)")
+    List<ReminderEntity> findByTenantIdAndUserIdOrTargetUserId(
+            @Param("tenantId") String tenantId,
+            @Param("userId") String userId);
+
+    /**
      * 统计用户创建的有效提醒数量
      */
     @Query("SELECT COUNT(r) FROM ReminderEntity r WHERE r.tenantId = :tenantId AND r.userId = :userId AND r.status = 'ACTIVE'")
