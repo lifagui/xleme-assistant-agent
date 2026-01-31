@@ -81,8 +81,8 @@ public class ReminderApiController {
      */
     @GetMapping("/timeline")
     public ResponseEntity<TimelineResponse> getTimeline(
-            @RequestParam(defaultValue = "ALL") String filter,
-            @RequestParam(defaultValue = "50") int limit) {
+            @RequestParam(name = "filter", defaultValue = "ALL") String filter,
+            @RequestParam(name = "limit", defaultValue = "50") int limit) {
         String userId = LoginContext.getUserId();
         if (!StringUtils.hasText(userId)) {
             return ResponseEntity.badRequest().build();
