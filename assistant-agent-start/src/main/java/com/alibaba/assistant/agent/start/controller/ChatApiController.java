@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.assistant.agent.common.context.LoginContext;
+import com.alibaba.assistant.agent.common.context.UserContextHolder;
 import com.alibaba.assistant.agent.extension.conversation.model.Conversation;
 import com.alibaba.assistant.agent.extension.conversation.model.Message.ContentType;
 import com.alibaba.assistant.agent.extension.conversation.model.Message.MessageRole;
@@ -81,6 +82,7 @@ public class ChatApiController {
     
     // 会话管理：sessionId -> conversationId（用于消息持久化）
     private final Map<String, String> sessionConversationMap = new ConcurrentHashMap<>();
+    
 
     private final ConversationService conversationService;
     private final AsyncMessagePersistenceService messagePersistenceService;
@@ -145,23 +147,29 @@ public class ChatApiController {
         String threadId = UUID.randomUUID().toString();
         sessionThreadMap.put(sessionId, threadId);
         
+        // 保存用户上下文到 UserContextHolder（供异步工具调用时使用）
+        String userId = LoginContext.getUserId();
+        String tenantId = LoginContext.getTenantId();
+        UserContextHolder.setContext(userId, tenantId);
+        logger.debug("保存用户上下文: sessionId={}, userId={}, tenantId={}", sessionId, userId, tenantId);
+        
         // 持久化会话到数据库
         if (conversationService != null) {
             try {
-                String userId = LoginContext.getUserId();
                 Conversation conversation = conversationService.createConversation(
                         userId != null ? userId : "anonymous",
                         threadId,
                         null  // 标题可以后续更新
                 );
                 sessionConversationMap.put(sessionId, conversation.getId());
-                logger.info("创建新会话: sessionId={}, threadId={}, conversationId={}", 
-                        sessionId, threadId, conversation.getId());
+                logger.info("创建新会话: sessionId={}, threadId={}, conversationId={}, userId={}, tenantId={}", 
+                        sessionId, threadId, conversation.getId(), userId, tenantId);
             } catch (Exception e) {
                 logger.warn("持久化会话失败，继续使用内存会话: sessionId={}", sessionId, e);
             }
         } else {
-            logger.info("创建新会话（内存模式）: sessionId={}, threadId={}", sessionId, threadId);
+            logger.info("创建新会话（内存模式）: sessionId={}, threadId={}, userId={}, tenantId={}", 
+                    sessionId, threadId, userId, tenantId);
         }
         
         return ResponseEntity.ok(new SessionResponse(sessionId, true));
@@ -216,6 +224,9 @@ public class ChatApiController {
             }
             String threadId = sessionThreadMap.computeIfAbsent(sessionId, k -> UUID.randomUUID().toString());
             
+            // 保存用户上下文（供异步工具调用时使用）
+            ensureUserContextSaved(sessionId);
+            
             // 确保会话已持久化
             String conversationId = ensureConversationPersisted(sessionId, threadId);
 
@@ -267,6 +278,9 @@ public class ChatApiController {
             }
             String threadId = sessionThreadMap.computeIfAbsent(sessionId, k -> UUID.randomUUID().toString());
             final String finalSessionId = sessionId;
+            
+            // 保存用户上下文（供异步工具调用时使用）
+            ensureUserContextSaved(sessionId);
             
             // 确保会话已持久化
             String conversationId = ensureConversationPersisted(sessionId, threadId);
@@ -499,6 +513,18 @@ public class ChatApiController {
                 .replace("\n", "\\n")
                 .replace("\r", "\\r")
                 .replace("\t", "\\t");
+    }
+
+    /**
+     * 确保用户上下文已保存（供异步工具调用时使用）
+     * 
+     * @param sessionId 会话ID
+     */
+    private void ensureUserContextSaved(String sessionId) {
+        String userId = LoginContext.getUserId();
+        String tenantId = LoginContext.getTenantId();
+        UserContextHolder.setContext(userId, tenantId);
+        logger.debug("保存用户上下文: sessionId={}, userId={}, tenantId={}", sessionId, userId, tenantId);
     }
 
     /**

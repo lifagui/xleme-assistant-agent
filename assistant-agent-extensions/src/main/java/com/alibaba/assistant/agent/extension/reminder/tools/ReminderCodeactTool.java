@@ -33,6 +33,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
 import com.alibaba.assistant.agent.common.context.LoginContext;
+import com.alibaba.assistant.agent.common.context.UserContextHolder;
 import com.alibaba.assistant.agent.common.enums.Language;
 import com.alibaba.assistant.agent.common.tools.CodeExample;
 import com.alibaba.assistant.agent.common.tools.CodeactTool;
@@ -126,7 +127,11 @@ public class ReminderCodeactTool implements CodeactTool {
      */
     private String createReminder(Map<String, Object> params) {
         try {
-            String userId = LoginContext.getUserId();
+            // 获取用户ID：优先从 LoginContext 获取，如果为空则从 UserContextHolder 获取
+            String userId = UserContextHolder.getUserId();
+            String tenantId = UserContextHolder.getTenantId();
+            log.info("创建提醒 - userId={}, tenantId={}", userId, tenantId);
+            
             String targetUserId = (String) params.getOrDefault("target_user_id", userId);
             String typeStr = (String) params.get("type");
             String text = (String) params.get("text");
@@ -752,4 +757,5 @@ public class ReminderCodeactTool implements CodeactTool {
                 .returnDirect(false)
                 .build();
     }
+
 }

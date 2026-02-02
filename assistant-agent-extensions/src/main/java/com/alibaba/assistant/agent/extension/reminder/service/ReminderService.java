@@ -15,7 +15,18 @@
  */
 package com.alibaba.assistant.agent.extension.reminder.service;
 
-import com.alibaba.assistant.agent.common.context.LoginContext;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alibaba.assistant.agent.common.context.UserContextHolder;
 import com.alibaba.assistant.agent.extension.reminder.model.NotificationChannel;
 import com.alibaba.assistant.agent.extension.reminder.model.Reminder;
 import com.alibaba.assistant.agent.extension.reminder.model.ReminderLog;
@@ -24,16 +35,6 @@ import com.alibaba.assistant.agent.persistence.entity.ReminderEntity;
 import com.alibaba.assistant.agent.persistence.entity.ReminderLogEntity;
 import com.alibaba.assistant.agent.persistence.repository.ReminderJpaRepository;
 import com.alibaba.assistant.agent.persistence.repository.ReminderLogJpaRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * 提醒服务
@@ -59,7 +60,8 @@ public class ReminderService {
     }
 
     private String getTenantId() {
-        String tenantId = LoginContext.getTenantId();
+        // 使用 UserContextHolder 获取租户ID（自动从 LoginContext 或备用上下文获取）
+        String tenantId = UserContextHolder.getTenantId();
         return (tenantId != null && !tenantId.isEmpty()) ? tenantId : DEFAULT_TENANT_ID;
     }
 
