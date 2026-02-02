@@ -49,6 +49,11 @@ public enum ReminderType {
     SLEEP("睡觉提醒"),
 
     /**
+     * 起床提醒
+     */
+    WAKE_UP("起床提醒"),
+
+    /**
      * 自定义提醒
      */
     CUSTOM("自定义提醒"),

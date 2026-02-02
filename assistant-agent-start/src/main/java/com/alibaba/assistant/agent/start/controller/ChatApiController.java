@@ -150,7 +150,7 @@ public class ChatApiController {
         // 保存用户上下文到 UserContextHolder（供异步工具调用时使用）
         String userId = LoginContext.getUserId();
         String tenantId = LoginContext.getTenantId();
-        UserContextHolder.setContext(userId, tenantId);
+        UserContextHolder.setContext(sessionId, userId, tenantId);
         logger.debug("保存用户上下文: sessionId={}, userId={}, tenantId={}", sessionId, userId, tenantId);
         
         // 持久化会话到数据库
@@ -183,6 +183,7 @@ public class ChatApiController {
     @DeleteMapping("/session/{sessionId}")
     public ResponseEntity<Map<String, Object>> deleteSession(@PathVariable String sessionId) {
         String removed = sessionThreadMap.remove(sessionId);
+        UserContextHolder.clearSession(sessionId);  // 清理用户上下文
         Map<String, Object> response = new HashMap<>();
         response.put("session_id", sessionId);
         response.put("deleted", removed != null);
@@ -523,7 +524,9 @@ public class ChatApiController {
     private void ensureUserContextSaved(String sessionId) {
         String userId = LoginContext.getUserId();
         String tenantId = LoginContext.getTenantId();
-        UserContextHolder.setContext(userId, tenantId);
+        UserContextHolder.setContext(sessionId, userId, tenantId);
+        // 同时设置当前线程的 sessionId，以便工具执行时能找到对应的上下文
+        UserContextHolder.setCurrentSessionId(sessionId);
         logger.debug("保存用户上下文: sessionId={}, userId={}, tenantId={}", sessionId, userId, tenantId);
     }
 

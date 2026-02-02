@@ -15,6 +15,9 @@
  */
 package com.alibaba.assistant.agent.common.context;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,8 +29,7 @@ import org.slf4j.LoggerFactory;
  * 可以从此类获取备用的用户上下文。
  * </p>
  * <p>
- * 注意：这是一个简化方案，适用于单用户或低并发场景。
- * 对于高并发多用户场景，建议使用更复杂的上下文传递机制（如 Reactor Context）。
+ * 支持多用户并发场景：使用 sessionId 作为 key 隔离不同用户的上下文。
  * </p>
  *
  * @author Assistant Agent Team
@@ -40,33 +42,89 @@ public class UserContextHolder {
     /**
      * 用户上下文信息
      */
-    public record UserContext(String userId, String tenantId) {}
-
-    /**
-     * 当前活跃的用户上下文（volatile 保证可见性）
-     */
-    private static volatile UserContext currentUserContext = null;
-
-    /**
-     * 设置当前用户上下文
-     *
-     * @param userId 用户ID
-     * @param tenantId 租户ID
-     */
-    public static void setContext(String userId, String tenantId) {
-        if (userId != null || tenantId != null) {
-            currentUserContext = new UserContext(userId, tenantId);
-            logger.debug("设置用户上下文: userId={}, tenantId={}", userId, tenantId);
+    public record UserContext(String userId, String tenantId, long timestamp) {
+        public UserContext(String userId, String tenantId) {
+            this(userId, tenantId, System.currentTimeMillis());
         }
     }
 
     /**
-     * 获取当前用户上下文
+     * 按 sessionId 存储用户上下文（支持多用户并发）
+     */
+    private static final Map<String, UserContext> SESSION_CONTEXT_MAP = new ConcurrentHashMap<>();
+
+    /**
+     * 当前线程关联的 sessionId（用于在工具执行时查找对应的用户上下文）
+     */
+    private static final ThreadLocal<String> CURRENT_SESSION_ID = new ThreadLocal<>();
+
+    /**
+     * 设置当前会话的用户上下文
+     *
+     * @param sessionId 会话ID
+     * @param userId 用户ID
+     * @param tenantId 租户ID
+     */
+    public static void setContext(String sessionId, String userId, String tenantId) {
+        if (sessionId != null && (userId != null || tenantId != null)) {
+            SESSION_CONTEXT_MAP.put(sessionId, new UserContext(userId, tenantId));
+            CURRENT_SESSION_ID.set(sessionId);
+            logger.debug("设置用户上下文: sessionId={}, userId={}, tenantId={}", sessionId, userId, tenantId);
+        }
+    }
+
+    /**
+     * 设置当前线程关联的 sessionId
+     * <p>
+     * 在开始处理请求时调用，以便后续工具执行时能找到对应的用户上下文
+     * </p>
+     *
+     * @param sessionId 会话ID
+     */
+    public static void setCurrentSessionId(String sessionId) {
+        CURRENT_SESSION_ID.set(sessionId);
+    }
+
+    /**
+     * 获取当前线程关联的 sessionId
+     *
+     * @return sessionId，如果未设置则返回 null
+     */
+    public static String getCurrentSessionId() {
+        return CURRENT_SESSION_ID.get();
+    }
+
+    /**
+     * 根据 sessionId 获取用户上下文
+     *
+     * @param sessionId 会话ID
+     * @return 用户上下文，如果不存在则返回 null
+     */
+    public static UserContext getContext(String sessionId) {
+        return sessionId != null ? SESSION_CONTEXT_MAP.get(sessionId) : null;
+    }
+
+    /**
+     * 获取当前会话的用户上下文
+     * <p>
+     * 优先使用当前线程关联的 sessionId 查找，如果没有则返回最近活跃的上下文
+     * </p>
      *
      * @return 用户上下文，如果未设置则返回 null
      */
     public static UserContext getContext() {
-        return currentUserContext;
+        // 优先使用当前线程关联的 sessionId
+        String sessionId = CURRENT_SESSION_ID.get();
+        if (sessionId != null) {
+            UserContext ctx = SESSION_CONTEXT_MAP.get(sessionId);
+            if (ctx != null) {
+                return ctx;
+            }
+        }
+        // 兜底：返回最近活跃的上下文（按时间戳排序）
+        return SESSION_CONTEXT_MAP.values().stream()
+                .max((a, b) -> Long.compare(a.timestamp(), b.timestamp()))
+                .orElse(null);
     }
 
     /**
@@ -84,7 +142,7 @@ public class UserContextHolder {
             return userId;
         }
         // 从备用上下文获取
-        UserContext ctx = currentUserContext;
+        UserContext ctx = getContext();
         if (ctx != null && ctx.userId() != null && !ctx.userId().isEmpty()) {
             logger.debug("从备用上下文获取 userId: {}", ctx.userId());
             return ctx.userId();
@@ -107,7 +165,7 @@ public class UserContextHolder {
             return tenantId;
         }
         // 从备用上下文获取
-        UserContext ctx = currentUserContext;
+        UserContext ctx = getContext();
         if (ctx != null && ctx.tenantId() != null && !ctx.tenantId().isEmpty()) {
             logger.debug("从备用上下文获取 tenantId: {}", ctx.tenantId());
             return ctx.tenantId();
@@ -116,10 +174,30 @@ public class UserContextHolder {
     }
 
     /**
-     * 清除当前用户上下文
+     * 清除指定会话的用户上下文
+     *
+     * @param sessionId 会话ID
      */
-    public static void clear() {
-        currentUserContext = null;
-        logger.debug("清除用户上下文");
+    public static void clearSession(String sessionId) {
+        if (sessionId != null) {
+            SESSION_CONTEXT_MAP.remove(sessionId);
+            logger.debug("清除会话上下文: sessionId={}", sessionId);
+        }
+    }
+
+    /**
+     * 清除当前线程关联的 sessionId
+     */
+    public static void clearCurrentSessionId() {
+        CURRENT_SESSION_ID.remove();
+    }
+
+    /**
+     * 清理过期的会话上下文（超过30分钟未活跃的会话）
+     */
+    public static void cleanupExpiredSessions() {
+        long expirationTime = System.currentTimeMillis() - 30 * 60 * 1000; // 30分钟
+        SESSION_CONTEXT_MAP.entrySet().removeIf(entry -> entry.getValue().timestamp() < expirationTime);
+        logger.debug("清理过期会话，剩余会话数: {}", SESSION_CONTEXT_MAP.size());
     }
 }

@@ -15,17 +15,6 @@
  */
 package com.alibaba.assistant.agent.extension.trigger.repository;
 
-import com.alibaba.assistant.agent.common.context.LoginContext;
-import com.alibaba.assistant.agent.extension.trigger.model.ScheduleMode;
-import com.alibaba.assistant.agent.extension.trigger.model.SourceType;
-import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
-import com.alibaba.assistant.agent.extension.trigger.model.TriggerStatus;
-import com.alibaba.assistant.agent.persistence.entity.TriggerDefinitionEntity;
-import com.alibaba.assistant.agent.persistence.repository.TriggerDefinitionJpaRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -34,6 +23,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alibaba.assistant.agent.common.context.UserContextHolder;
+import com.alibaba.assistant.agent.extension.trigger.model.ScheduleMode;
+import com.alibaba.assistant.agent.extension.trigger.model.SourceType;
+import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
+import com.alibaba.assistant.agent.extension.trigger.model.TriggerStatus;
+import com.alibaba.assistant.agent.persistence.entity.TriggerDefinitionEntity;
+import com.alibaba.assistant.agent.persistence.repository.TriggerDefinitionJpaRepository;
 
 /**
  * 基于 JPA 的触发器仓库实现
@@ -69,7 +70,8 @@ public class JpaTriggerRepository implements TriggerRepository {
     }
 
     private String getTenantId() {
-        String tenantId = LoginContext.getTenantId();
+        // 使用 UserContextHolder 获取 tenantId（支持异步线程场景）
+        String tenantId = UserContextHolder.getTenantId();
         return (tenantId != null && !tenantId.isEmpty()) ? tenantId : DEFAULT_TENANT_ID;
     }
 

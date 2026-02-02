@@ -51,6 +51,7 @@ import com.alibaba.assistant.agent.extension.trigger.manager.TriggerManager;
 import com.alibaba.assistant.agent.extension.trigger.model.ScheduleMode;
 import com.alibaba.assistant.agent.extension.trigger.model.SourceType;
 import com.alibaba.assistant.agent.extension.trigger.model.TriggerDefinition;
+import com.alibaba.assistant.agent.extension.trigger.model.TriggerStatus;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -136,7 +137,13 @@ public class ReminderCodeactTool implements CodeactTool {
             String typeStr = (String) params.get("type");
             String text = (String) params.get("text");
             String scheduleMode = (String) params.get("schedule_mode");
+            if(scheduleMode == null || scheduleMode.isEmpty()) {
+                scheduleMode = "ONE_TIME";
+            }
             String scheduleValue = (String) params.get("schedule_value");
+            if(scheduleValue == null || scheduleValue.isEmpty()) {
+                scheduleValue = "0";
+            }
 
             if (typeStr == null || text == null) {
                 return errorResult("缺少必要参数: type 和 text");
@@ -168,8 +175,16 @@ public class ReminderCodeactTool implements CodeactTool {
             trigger.setSourceType(SourceType.USER);
             trigger.setSourceId(userId != null ? userId : "anonymous");
             trigger.setCreatedBy(userId);
-            trigger.setScheduleMode(parseScheduleMode(scheduleMode));
-            trigger.setScheduleValue(scheduleValue);
+            
+            ScheduleMode parsedScheduleMode = parseScheduleMode(scheduleMode);
+            trigger.setScheduleMode(parsedScheduleMode);
+            
+            // 对于 ONE_TIME 模式，将 scheduleValue 标准化为绝对时间戳（毫秒）
+            String normalizedScheduleValue = normalizeScheduleValue(scheduleValue, parsedScheduleMode);
+            trigger.setScheduleValue(normalizedScheduleValue);
+            log.info("标准化 scheduleValue: 原值={}, 模式={}, 标准化后={}", 
+                    scheduleValue, parsedScheduleMode, normalizedScheduleValue);
+            
             trigger.setExecuteFunction("send_reminder");
             
             // 注入发送提醒的 Python 代码快照
@@ -487,7 +502,7 @@ public class ReminderCodeactTool implements CodeactTool {
 
             // 4. 处理一次性执行的状态更新
             triggerManager.getDetail(reminder.getTriggerId()).ifPresent(trigger -> {
-                if (trigger.getScheduleMode() == com.alibaba.assistant.agent.extension.trigger.model.ScheduleMode.ONE_TIME) {
+                if (trigger.getScheduleMode() == ScheduleMode.ONE_TIME) {
                     log.info("检测到一次性提醒执行完成，更新状态: reminderId={}, triggerId={}", 
                             reminderId, trigger.getTriggerId());
                     
@@ -496,7 +511,7 @@ public class ReminderCodeactTool implements CodeactTool {
                     
                     // 更新触发器状态
                     triggerManager.updateStatus(trigger.getTriggerId(), 
-                            com.alibaba.assistant.agent.extension.trigger.model.TriggerStatus.FINISHED);
+                            TriggerStatus.FINISHED);
                 }
             });
 
@@ -537,6 +552,49 @@ public class ReminderCodeactTool implements CodeactTool {
             return ScheduleMode.valueOf(mode.toUpperCase());
         } catch (IllegalArgumentException e) {
             return ScheduleMode.FIXED_DELAY;
+        }
+    }
+
+    /**
+     * 标准化 scheduleValue
+     * <p>
+     * 对于 ONE_TIME 模式，将相对延迟（毫秒）转换为绝对时间戳（毫秒）
+     * AI 应该按照工具定义传入毫秒数，此方法将其转换为绝对时间戳存储
+     * </p>
+     *
+     * @param scheduleValue 原始调度值（延迟毫秒数）
+     * @param scheduleMode 调度模式
+     * @return 标准化后的调度值（绝对时间戳）
+     */
+    private String normalizeScheduleValue(String scheduleValue, ScheduleMode scheduleMode) {
+        if (scheduleValue == null || scheduleValue.isEmpty()) {
+            return scheduleValue;
+        }
+        
+        // 只对 ONE_TIME 模式进行标准化（转换为绝对时间戳）
+        if (scheduleMode != ScheduleMode.ONE_TIME) {
+            return scheduleValue;
+        }
+        
+        try {
+            long numericValue = Long.parseLong(scheduleValue);
+            
+            // 判断是否已经是绝对时间戳（大于 2000000000000，约2033年）
+            if (numericValue >= 2000000000000L) {
+                // 已经是绝对时间戳，直接返回
+                log.debug("scheduleValue 已是绝对时间戳: {}", numericValue);
+                return scheduleValue;
+            }
+            
+            // AI 传入的是延迟毫秒数，转换为绝对时间戳
+            long absoluteTimestamp = System.currentTimeMillis() + numericValue;
+            log.debug("scheduleValue 转换: 延迟{}ms -> 绝对时间戳{}", numericValue, absoluteTimestamp);
+            return String.valueOf(absoluteTimestamp);
+            
+        } catch (NumberFormatException e) {
+            // 不是数字，可能是 ISO-8601 格式，直接返回
+            log.warn("scheduleValue 不是数字格式，直接返回: {}", scheduleValue);
+            return scheduleValue;
         }
     }
 
@@ -669,7 +727,7 @@ public class ReminderCodeactTool implements CodeactTool {
                     "type": {
                         "type": "string",
                         "description": "提醒类型（create 操作必填）",
-                        "enum": ["DRINK_WATER", "MEDICINE", "SEDENTARY", "MEAL", "SLEEP", "CUSTOM", "RELAY"]
+                        "enum": ["DRINK_WATER", "MEDICINE", "SEDENTARY", "MEAL", "SLEEP", "WAKE_UP", "CUSTOM", "RELAY"]
                     },
                     "text": {
                         "type": "string",
@@ -689,12 +747,12 @@ public class ReminderCodeactTool implements CodeactTool {
                     },
                     "schedule_mode": {
                         "type": "string",
-                        "description": "调度模式",
+                        "description": "调度模式，根据用户表述判断：\\n- ONE_TIME(一次性)：用于'明天'、'后天'、'今晚'、'下周X'、'X点'、'X分钟/小时后'等特定时间点\\n- CRON(定时重复)：仅用于明确说'每天'、'每周X'、'每隔X'等重复性提醒\\n- FIXED_DELAY(固定间隔循环)：用于'每隔X小时/分钟'的循环提醒\\n【重要】如果用户没有明确说'每天'或'每周'等重复词，默认使用 ONE_TIME",
                         "enum": ["CRON", "FIXED_DELAY", "FIXED_RATE", "ONE_TIME"]
                     },
                     "schedule_value": {
                         "type": "string",
-                        "description": "调度值（如cron表达式或间隔时间）"
+                        "description": "调度值(字符串格式)：\\n- ONE_TIME模式：传从现在到目标时间的延迟毫秒数。如'明天早上8点'需计算距现在多少毫秒\\n- FIXED_DELAY/FIXED_RATE模式：传间隔毫秒数(如2小时=7200000)\\n- CRON模式：传cron表达式(如'0 0 8 * * ?'表示每天8点)"
                     },
                     "context": {
                         "type": "object",
@@ -713,7 +771,11 @@ public class ReminderCodeactTool implements CodeactTool {
                 .name("reminder")
                 .description("提醒管理工具，支持创建、更新、取消、删除、列出提醒。"
                         + "支持的提醒类型：喝水(DRINK_WATER)、吃药(MEDICINE)、久坐(SEDENTARY)、"
-                        + "吃饭(MEAL)、睡觉(SLEEP)、自定义(CUSTOM)、传话(RELAY)")
+                        + "吃饭(MEAL)、睡觉(SLEEP)、起床(WAKE_UP)、自定义(CUSTOM)、传话(RELAY)。"
+                        + "【调度模式选择规则】："
+                        + "1. 一次性提醒(ONE_TIME)：'明天X点'、'后天'、'今晚'、'下周一'、'X分钟后'、'X点提醒我' - 只提醒一次的场景；"
+                        + "2. 定时重复(CRON)：必须有'每天'、'每周X'等明确重复词才使用；"
+                        + "3. 如果用户没说'每天'或'每周'，默认用 ONE_TIME")
                 .inputSchema(inputSchema)
                 .build();
     }
@@ -735,18 +797,31 @@ public class ReminderCodeactTool implements CodeactTool {
     private CodeactToolMetadata buildCodeactMetadata() {
         return DefaultCodeactToolMetadata.builder()
                 .addSupportedLanguage(Language.PYTHON)
-                .addFewShot(new CodeExample("创建喝水提醒",
-                        "result = reminder(action='create', type='DRINK_WATER', text='该喝水啦~', "
+                .addFewShot(new CodeExample("创建一次性起床提醒（明天早上8点）",
+                        "# 用户说：明天早上八点提醒我起床\n"
+                                + "# 分析：没有说'每天'，所以是一次性提醒，计算从现在到明天8点的毫秒数\n"
+                                + "result = reminder(action='create', type='WAKE_UP', text='起床啦~', "
+                                + "schedule_mode='ONE_TIME', schedule_value='43200000')",
+                        "【一次性】明天X点、后天X点、今晚X点 都用 ONE_TIME，schedule_value传延迟毫秒数"))
+                .addFewShot(new CodeExample("创建每天重复的起床提醒",
+                        "# 用户说：每天早上八点提醒我起床\n"
+                                + "# 分析：有'每天'，所以是重复提醒，用CRON\n"
+                                + "result = reminder(action='create', type='WAKE_UP', text='起床啦~', "
+                                + "schedule_mode='CRON', schedule_value='0 0 8 * * ?')",
+                        "【重复】只有明确说'每天'、'每周X'才用 CRON"))
+                .addFewShot(new CodeExample("创建一次性提醒（半小时后）",
+                        "result = reminder(action='create', type='CUSTOM', text='上飞机', "
+                                + "schedule_mode='ONE_TIME', schedule_value='1800000')",
+                        "半小时=1800000毫秒，X分钟/小时后 用 ONE_TIME"))
+                .addFewShot(new CodeExample("创建喝水提醒（每2小时循环）",
+                        "# 用户说：每隔2小时提醒我喝水\n"
+                                + "result = reminder(action='create', type='DRINK_WATER', text='该喝水啦~', "
                                 + "schedule_mode='FIXED_DELAY', schedule_value='7200000')",
-                        "创建每2小时提醒喝水"))
-                .addFewShot(new CodeExample("创建传话提醒（实名）",
+                        "'每隔X小时'用 FIXED_DELAY，2小时=7200000毫秒"))
+                .addFewShot(new CodeExample("创建传话提醒（一次性）",
                         "result = reminder(action='create', type='RELAY', target_phone='13800138000', "
-                                + "who='妈妈', text='按时吃药', schedule_mode='ONE_TIME', schedule_value='60')",
-                        "实名传话：who和text各不超过20字符，适配短信模板"))
-                .addFewShot(new CodeExample("创建传话提醒（匿名）",
-                        "result = reminder(action='create', type='RELAY', target_phone='13900139000', "
-                                + "who='匿名', text='早点睡觉', schedule_mode='ONE_TIME', schedule_value='120')",
-                        "匿名传话：who填'匿名'，text简洁明了"))
+                                + "who='妈妈', text='按时吃药', schedule_mode='ONE_TIME', schedule_value='60000')",
+                        "传话提醒通常是一次性的，1分钟=60000毫秒"))
                 .addFewShot(new CodeExample("列出有效提醒",
                         "result = reminder(action='list', active_only=True)",
                         "列出当前用户所有有效的提醒"))

@@ -15,9 +15,13 @@
  */
 package com.alibaba.assistant.agent.start.controller;
 
-import com.alibaba.assistant.agent.common.context.LoginContext;
-import com.alibaba.assistant.agent.persistence.entity.ReminderEntity;
-import com.alibaba.assistant.agent.persistence.repository.ReminderJpaRepository;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,12 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.alibaba.assistant.agent.common.context.LoginContext;
+import com.alibaba.assistant.agent.persistence.entity.ReminderEntity;
+import com.alibaba.assistant.agent.persistence.repository.ReminderJpaRepository;
 
 /**
  * 回忆模块接口
@@ -194,10 +195,10 @@ public class ReminderApiController {
         if ("SLEEP".equals(reminderType)) {
             return "睡觉提醒";
         }
-        if ("CUSTOM".equals(reminderType)) {
-            return "自定义提醒";
+        if ("WAKE_UP".equals(reminderType)) {
+            return "起床提醒";
         }
-        return "提醒";
+        return "自定义提醒";
     }
 
     private String toStringSafely(Object value) {

@@ -15,26 +15,26 @@
  */
 package com.alibaba.assistant.agent.extension.trigger.repository;
 
-import com.alibaba.assistant.agent.common.context.LoginContext;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alibaba.assistant.agent.common.context.UserContextHolder;
 import com.alibaba.assistant.agent.extension.trigger.model.ExecutionStatus;
 import com.alibaba.assistant.agent.extension.trigger.model.TriggerExecutionRecord;
 import com.alibaba.assistant.agent.persistence.entity.TriggerExecutionRecordEntity;
 import com.alibaba.assistant.agent.persistence.repository.TriggerExecutionRecordJpaRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * 基于 JPA 的触发器执行记录存储实现
@@ -57,7 +57,8 @@ public class JpaTriggerExecutionLogRepository implements TriggerExecutionLogRepo
     }
 
     private String getTenantId() {
-        String tenantId = LoginContext.getTenantId();
+        // 使用 UserContextHolder 获取 tenantId（支持异步线程场景）
+        String tenantId = UserContextHolder.getTenantId();
         return (tenantId != null && !tenantId.isEmpty()) ? tenantId : DEFAULT_TENANT_ID;
     }
 

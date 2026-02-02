@@ -212,12 +212,34 @@ public class SpringSchedulerExecutionBackend implements ExecutionBackend {
 	}
 
 	private Instant parseInstant(String value) {
-		// 支持ISO-8601格式或时间戳
+		// 支持ISO-8601格式或绝对时间戳
+		// 注意：ReminderCodeactTool 已经将 ONE_TIME 的 scheduleValue 标准化为绝对时间戳
 		try {
-			return Instant.ofEpochMilli(Long.parseLong(value));
+			long numericValue = Long.parseLong(value);
+			
+			// 判断是绝对时间戳还是相对延迟：
+			// 使用合理的阈值：1500000000000（约2017年7月）
+			// - 大于此值认为是绝对时间戳（2017年之后的时间）
+			// - 小于此值认为是相对延迟（最多约47年的延迟，足够覆盖所有场景）
+			long TIMESTAMP_THRESHOLD = 1500000000000L; // 2017-07-14
+			
+			if (numericValue >= TIMESTAMP_THRESHOLD) {
+				// 绝对时间戳
+				Instant result = Instant.ofEpochMilli(numericValue);
+				log.debug("parseInstant 解析为绝对时间戳: {} -> {}", numericValue, result);
+				return result;
+			} else {
+				// 相对延迟：加上当前时间
+				Instant result = Instant.now().plusMillis(numericValue);
+				log.debug("parseInstant 解析为相对延迟: {}ms -> {}", numericValue, result);
+				return result;
+			}
 		}
 		catch (NumberFormatException e) {
-			return Instant.parse(value);
+			// ISO-8601 格式
+			Instant result = Instant.parse(value);
+			log.debug("parseInstant 解析为ISO-8601格式: {} -> {}", value, result);
+			return result;
 		}
 	}
 
